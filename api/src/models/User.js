@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
         photoUrl: DataTypes.STRING,
         tokenReset: DataTypes.STRING,
         type: DataTypes.STRING,
-        addressId: DataTypes.INTEGER,
         categoryId: DataTypes.INTEGER,
         playId: DataTypes.STRING,
         notifiePush: DataTypes.BOOLEAN,
@@ -26,13 +25,14 @@ module.exports = (sequelize, DataTypes) => {
             timestamps: true,
         });
     User.associate = function (models) {
-        User.belongsTo(models.Address, {
-            foreingKey: 'addressId',
-            onDelete: 'cascade'
-        }),
-            User.belongsTo(models.Category, {
-                foreingKey: 'categoryId'
-            })
+        User.belongsTo(models.Category, {
+            foreignKey: 'categoryId',
+            as: 'category'
+        });
+        User.hasMany(models.Address, {
+            foreignKey: 'userId',
+            as: 'address'
+        })
     };
 
     return User;

@@ -7,12 +7,54 @@ const typeDefs = gql`
         encoding: String!
     }
 
-    type token {
+    type Token {
         name: String,
         token: String,
         typeUser: String,
         typeUserEncript: String,
         photoUrl: String
+    }
+
+    type Category {
+        id: ID,
+        name: String,
+        photoUrl: String
+    }
+    
+    type Subcategory {
+        id: ID,
+        CategoryId: ID,
+        name: String,
+        photoUrl: String
+    }
+
+    type Address {
+        id: ID,
+        cep: String,
+        state: String,
+        city: String,
+        district: String,
+        street: String,
+        complement: String,
+        number: Int
+    }
+
+    type User {
+        id: ID,
+        name: String,
+        doc: String,
+        email: String,
+        phone1: String,
+        phone2: String,
+        user: String,
+        birth: String,
+        photoUrl: String,
+        tokenReset: String,
+        type: String,
+        address: [Address],
+        category: Category,
+        subcategory: Subcategory,
+        playId: String
     }
 
     type State {
@@ -22,21 +64,29 @@ const typeDefs = gql`
     }
 
 
-    #========// QUERY //========#
+    # =====================>>  QUERY  <<=====================#
 
     type Query {
-        ##===> Tests <===##
+        ##===========> TESTS <============##
         test: String!
         
-        ##===> Login/Session <===##
-        sessionSign(user: String!, password: String!, playId: String): token
+        ##===========> LOGIN/SESSION <============##
+        sessionSign(user: String!, password: String!, playId: String): Token
 
-        ##===> States <===##
+        ##===========> USERS <============##
+        userIndex(page: Int): [User]
+        userIndexByCategory(page: Int, categoryId: ID!): [User]
+        userShow(id: ID!): User
+        userShowByDoc(doc: String!): User
+        userShowByEmail(email: String!): User
+        userShowByUser(user: String!): User
+
+        ##===========> STATES <============##
         stateIndex: [State]
 
     }
 
-    #========// MUTATION //========#
+    # =====================>>  MUTATION  <<=====================#
 
     type Mutation {
         test(name: String!): String!

@@ -36,26 +36,21 @@ module.exports = {
 
     validateToken(req) {
         const { authorization } = req.headers;
-
-        if (!authorization) {
-            throw {
-                code: 401,
-                message: "Authorization is required"
-            }
-        }
+        let response = {};
 
         jwt.verify(authorization, SECRET, function (err, decoded) {
-            if (err) {
-                throw {
-                    message: 'Invalid Authorization',
-                    code: 401
-                };
-            }
+            if (err) return;
 
             Object.entries(decoded).forEach(el => {
-                if (el[0] === 'security') el[1] = decrypt(el[1], type);
-                req.headers[el[0]] = el[1];
+                response[el[0]] = el[1];
             });
         });
+
+        return response;
     },
+
+    isAuthenticated(context) {
+        if (!context.loggedIn) throw { code: 401, message: 'Not Authorized' };
+        return;
+    }
 }

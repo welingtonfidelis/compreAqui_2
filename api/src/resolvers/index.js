@@ -1,17 +1,20 @@
 const Upload = require('../services/Upload');
-const { errorResponse, createToken, createError } = require('../utils');
-const { User, State } = require('../models');
+const { errorResponse, createToken, createError, isAuthenticated } = require('../utils');
+const { User, Category, Address, State } = require('../models');
 const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const resolvers = {
-    //========// QUERY //========//
+    // =====================>>  QUERY  <<=====================//
+
     Query: {
+        //===========> TESTES <============//
         test: () => {
             return 'Hello World!';
         },
 
+        //===========> LOGIN/SESSION <============//
         sessionSign: async (_, args) => {
             try {
                 const { user, password, playId } = args;
@@ -41,7 +44,7 @@ const resolvers = {
                     );
                 }
 
-                const token = createToken({ userId, userType });
+                const token = createToken({ userId, userType, loggedIn: true });
                 return {
                     name, token, photoUrl, userType
                 };
@@ -51,6 +54,7 @@ const resolvers = {
             }
         },
 
+        //===========> STATES <============//
         stateIndex: async () => {
             let query = null;
             try {
@@ -59,15 +63,42 @@ const resolvers = {
                 });
 
             } catch (error) {
-                const err = error.stack || error.errors || error.message || error;
-                console.warn(err);
+                return errorResponse(error);
             }
 
             return query;
-        }
+        },
+
+        //===========> USERS <============//
+        userIndex: async (_, args, context) => {
+            try {
+                isAuthenticated(context);
+                const { page = 1 } = args;
+
+                return await User.findAll({
+                    order: [['name', 'ASC']],
+                    include: [
+                        {
+                            model: Address,
+                            as: 'address'
+                        },
+                        {
+                            model: Category,
+                            as: 'category'
+                        }
+                    ],
+                    offset: (page - 1) * 15,
+                    limit: 15
+                });
+    
+            } catch (error) {
+                return errorResponse(error);
+            }
+        },
     },
 
-    //========// MUTATION //========//
+    // =====================>>  MUTATION  <<=====================//
+
     Mutation: {
         test: (parent, args) => {
             return 'Olá ' + args.name;

@@ -1,32 +1,18 @@
 require('dotenv').config();
-const resolvers = require('./resolvers');
 
 const { ApolloServer } = require('apollo-server');
+const resolvers = require('./resolvers');
 const typeDefs = require('./schema');
+const { validateToken } = require('./utils');
 
-const port = 3001;
-
-// const autheticate = (token) => {
-//     return jwt.verify(token, process.env.SECRET, function (err, decoded) {
-//         if (err) { return }
-
-//         return {
-//             UserId: decoded.id,
-//             typeUser: decoded.typeUser
-//         }
-//     });
-// };
-
+const port = process.env.PORT || 3001;
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    // context: ({ req, res }) => {
-    //     const token = req.headers.authorization || '';
-
-    //     if (token) return autheticate(token);
-
-    //     return {};
-    // },
+    context: ({ req }) => {
+        if (req.headers.authorization) return validateToken(req);
+        return {};
+    },
 });
 
 server.listen(port).then(({ url }) => {
