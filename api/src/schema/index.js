@@ -63,6 +63,73 @@ const typeDefs = gql`
         code: String
     }
 
+    type Brand {
+        id: ID,
+        providerId: ID,
+        brandDescription: String
+    }
+    
+    type Size {
+        id: ID,
+        ProviderId: ID,
+        sizeDescription: String
+    }
+    
+    type Product {
+        id: ID,
+        providerId: ID,
+        brandId: ID,
+        sizeId: ID,
+        subcategoryId: ID,
+        name: String,
+        description: String,
+        price: Float,
+        stock: Int,
+        provider: User,
+        brand: Brand,
+        size: Size,
+        productPhotos: [ProductPhoto]
+    }
+    
+    type ProductPhoto {
+        id: ID,
+        productId: ID,
+        photoUrl: String
+    }
+    
+    type Order {
+        id: ID,
+        clientId: ID,
+        providerId: ID,
+        timeWait: Int,
+        value: Float,
+        status: String,
+        delivery: String,
+        cashBack: Float,
+        cash: String,
+        createdAt: String,
+        client: User,
+        provider: User,
+        observation: String,
+        reason: String,
+        orderProducts: [OrderProducts]
+    }
+    
+    input OrderListProduct {
+        id: ID,
+        amount: Int
+        price: Float
+    }
+    
+    type OrderProducts {
+        id: ID,
+        orderId: ID,
+        productId: ID,
+        amount: Int,
+        price: Float,
+        order: Order,
+        product: Product
+    }
 
     # =====================>>  QUERY  <<=====================#
 
@@ -83,6 +150,11 @@ const typeDefs = gql`
 
         ##===========> STATES <============##
         stateIndex: [State]
+
+        ##===========> BRANDS <============##
+        brandCount(providerId: ID!): Int
+        brandIndex(providerId: ID!, page: Int): [Brand]
+        brandShow(id: ID!): Brand
 
     }
 

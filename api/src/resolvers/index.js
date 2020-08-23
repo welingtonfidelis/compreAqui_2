@@ -1,9 +1,10 @@
 const Upload = require('../services/Upload');
 const { errorResponse, createToken, createError, isAuthenticated } = require('../utils');
-const { User, Category, Address, State } = require('../models');
 const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const {
+    User, Category, Address, State, Brand
+} = require('../models');
 
 const resolvers = {
     // =====================>>  QUERY  <<=====================//
@@ -90,7 +91,148 @@ const resolvers = {
                     offset: (page - 1) * 15,
                     limit: 15
                 });
-    
+
+            } catch (error) {
+                return errorResponse(error);
+            }
+        },
+        userIndexByCategory: async (_, args, context) => {
+            try {
+                isAuthenticated(context);
+                const { page = 1, CategoryId } = args;
+
+                return await User.findAll({
+                    where: {
+                        CategoryId
+                    },
+                    order: [['name', 'ASC']],
+                    include: [
+                        {
+                            model: Address,
+                        }
+                    ],
+                    offset: (page - 1) * 15,
+                    limit: 15
+                });
+                // console.log("All users:", JSON.stringify(query, null, 2));
+
+            } catch (error) {
+                return errorResponse(error);
+            }
+        },
+
+        userShow: async (_, args, context) => {
+            try {
+                isAuthenticated(context);
+                const { id } = args;
+
+                return await User.findOne({
+                    where: {
+                        id
+                    },
+                    include: [
+                        {
+                            model: Address,
+                            as: 'address'
+                        }
+                    ]
+                })
+
+            } catch (error) {
+                return errorResponse(error);
+            }
+        },
+
+        userShowByDoc: async (_, args) => {
+            try {
+                const { doc } = args;
+
+                return await User.findOne({
+                    where: {
+                        doc
+                    }
+                })
+
+            } catch (error) {
+                return errorResponse(error);
+            }
+        },
+
+        userShowByEmail: async (_, args) => {
+            try {
+                const { email } = args;
+
+                return await User.findOne({
+                    where: {
+                        email
+                    }
+                })
+
+            } catch (error) {
+                return errorResponse(error);
+            }
+        },
+
+        userShowByUser: async (_, args) => {
+            try {
+                const { user } = args;
+
+                return await User.findOne({
+                    where: {
+                        user
+                    }
+                })
+
+            } catch (error) {
+                return errorResponse(error);
+            }
+        },
+
+        //===========> BRANDS <============//
+        brandCount: async (_, args, context) => {
+            try {
+                isAuthenticated(context);
+                const { providerId } = args;
+
+                const { count } = await Brand.findAndCountAll({
+                    where: { providerId }
+                });
+
+                return count;
+
+            } catch (error) {
+                return errorResponse(error);
+            }
+        },
+
+        brandIndex: async (_, args, context) => {
+            try {
+                isAuthenticated(context);
+                const { page = 1, providerId } = args;
+
+                return await Brand.findAll({
+                    where: {
+                        providerId
+                    },
+                    order: [['brandDescription', 'ASC']],
+                    offset: (page - 1) * 15,
+                    limit: 15
+                });
+
+            } catch (error) {
+                return errorResponse(error);
+            }
+        },
+
+        brandShow: async (_, args, context) => {
+            try {
+                isAuthenticated(context);
+                const { id } = args;
+
+                return await Brand.findOne({
+                    where: { id }
+                });
+
             } catch (error) {
                 return errorResponse(error);
             }

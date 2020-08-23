@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
         });
     Brand.associate = function (models) {
         Brand.belongsTo(models.User, {
-            foreingKey: 'ProviderId',
-            as: "Provider"
+            foreingKey: 'providerId',
+            as: "provider"
         })
     }
 
