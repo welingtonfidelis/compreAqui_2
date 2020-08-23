@@ -23,7 +23,7 @@ const typeDefs = gql`
     
     type Subcategory {
         id: ID,
-        CategoryId: ID,
+        categoryId: ID,
         name: String,
         photoUrl: String
     }
@@ -71,7 +71,7 @@ const typeDefs = gql`
     
     type Size {
         id: ID,
-        ProviderId: ID,
+        providerId: ID,
         sizeDescription: String
     }
     
@@ -152,10 +152,33 @@ const typeDefs = gql`
         stateIndex: [State]
 
         ##===========> BRANDS <============##
-        brandCount(providerId: ID!): Int
-        brandIndex(providerId: ID!, page: Int): [Brand]
+        brandCount: Int
+        brandIndex(page: Int): [Brand]
         brandShow(id: ID!): Brand
 
+        ##===========> SIZES <============##
+        sizeCount: Int
+        sizeIndex(page: Int): [Size]
+        sizeShow(id: ID!): Size
+
+        ##===========> CATEGORIES <============##
+        categoryIndex: [Category]
+
+        ##===========> SUBCATEGORIES <============##
+        subcategoryIndex: [Subcategory]
+        subcategoryIndexByUser: [Subcategory]
+
+        ##===========> PRODUCT <============##
+        productIndex(providerId: ID, page: Int): [Product]
+        productCount(providerId: ID): Int
+        productShow(id: ID!): Product
+        
+        ##===========> ORDER <============##
+        orderIndex(page: Int, status: String): [Order]
+        orderCount(status: String): Int
+    
+        ##===========> ORDER/PRODUTO <============##
+        orderShow(id: ID!): Order
     }
 
     # =====================>>  MUTATION  <<=====================#

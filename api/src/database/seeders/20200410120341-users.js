@@ -18,7 +18,7 @@ module.exports = {
                     user: `comercial${i}`,
                     birth: '1990-07-28 00:00:00',
                     password: bcrypt.hashSync('1234', 10),
-                    type: 'comercial',
+                    type: 'commercial',
                     categoryId: Math.floor(Math.random() * 6) + 1,
                     photoUrl: "https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80",
                     createdAt: new Date(),

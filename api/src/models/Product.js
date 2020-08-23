@@ -19,20 +19,24 @@ module.exports = (sequelize, DataTypes) => {
         });
     Product.associate = function (models) {
         Product.belongsTo(models.User, {
-            foreingKey: 'ProviderId',
-            as: 'Provider'
+            foreignKey: 'providerId',
+            as: 'provider'
         }),
         Product.belongsTo(models.Brand, {
-            foreingKey: 'brandId',
+            foreignKey: 'brandId',
+            as: 'brand'
         }),
         Product.belongsTo(models.Size, {
-            foreingKey: 'sizeId',
+            foreignKey: 'sizeId',
+            as: 'size'
         }),
         Product.belongsTo(models.Subcategory, {
-            foreingKey: 'subcategoryId',
+            foreignKey: 'subcategoryId',
+            as: 'subcategory'
         }),
         Product.hasMany(models.ProductPhoto, {
-            foreingKey: 'productId'
+            foreignKey: 'productId',
+            as: 'productPhoto'
         })
     };
 

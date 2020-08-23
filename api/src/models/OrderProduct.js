@@ -1,26 +1,28 @@
 module.exports = (sequelize, DataTypes) => {
-    const RequestProduct = sequelize.define('RequestProduct', {
+    const OrderProduct = sequelize.define('OrderProduct', {
         orderId: DataTypes.INTEGER,
         productId: DataTypes.INTEGER,
         amount: DataTypes.INTEGER,
         price: DataTypes.REAL
     },
         {
-            tableName: 'RequestProducts',
+            tableName: 'OrderProducts',
             createdAt: 'createdAt',
             updatedAt: 'updatedAt',
             deletedAt: 'deletedAt',
             paranoid: true,
             timestamps: true,
         });
-    RequestProduct.associate = function (models) {
-        RequestProduct.belongsTo(models.Request, {
-            foreingKey: 'orderId',
+    OrderProduct.associate = function (models) {
+        OrderProduct.belongsTo(models.Order, {
+            foreignKey: 'orderId',
+            as: 'order'
         }),
-        RequestProduct.belongsTo(models.Product, {
-            foreingKey: 'productId'
+        OrderProduct.belongsTo(models.Product, {
+            foreignKey: 'productId',
+            as: 'product'
         })
     };
 
-    return RequestProduct;
+    return OrderProduct;
 }

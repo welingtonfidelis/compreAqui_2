@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         });
     Brand.associate = function (models) {
         Brand.belongsTo(models.User, {
-            foreingKey: 'providerId',
+            foreignKey: 'providerId',
             as: "provider"
         })
     }

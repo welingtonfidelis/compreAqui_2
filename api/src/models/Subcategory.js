@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     });
     Subcategory.associate = function (models) {
         Subcategory.belongsTo(models.Category, {
-            foreingKey: 'categoryId',
-            onDelete: 'cascade'
+            foreignKey: 'categoryId',
+            as: 'category'
         })
     };
 

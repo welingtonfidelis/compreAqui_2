@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
         });
     Size.associate = function (models) {
         Size.belongsTo(models.User, {
-            foreingKey: 'providerId',
-            as: "Provider"
+            foreignKey: 'providerId',
+            as: "provider"
         })
     };
 

@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Request = sequelize.define('Request', {
+    const Order = sequelize.define('Order', {
         clientId: DataTypes.INTEGER,
         providerId: DataTypes.INTEGER,
         timeWait: DataTypes.INTEGER,
@@ -12,26 +12,27 @@ module.exports = (sequelize, DataTypes) => {
         reason: DataTypes.STRING
     },
         {
-            tableName: 'Requests',
+            tableName: 'Orders',
             createdAt: 'createdAt',
             updatedAt: 'updatedAt',
             deletedAt: 'deletedAt',
             paranoid: true,
             timestamps: true,
         });
-    Request.associate = function (models) {
-        Request.belongsTo(models.User, {
-            foreingKey: 'ProviderId',
-            as: 'Provider'
+    Order.associate = function (models) {
+        Order.belongsTo(models.User, {
+            foreignKey: 'providerId',
+            as: 'provider'
         }),
-        Request.belongsTo(models.User, {
-            foreingKey: 'clientId',
-            as: 'Client'
+        Order.belongsTo(models.User, {
+            foreignKey: 'clientId',
+            as: 'client'
         }),
-        Request.hasMany(models.RequestProduct, {
-            foreingKey: 'orderId'
+        Order.hasMany(models.OrderProduct, {
+            foreignKey: 'orderId',
+            as: 'orderProduct'
         })
     };
 
-    return Request;
+    return Order;
 }
