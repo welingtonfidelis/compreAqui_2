@@ -144,9 +144,9 @@ const typeDefs = gql`
         userIndex(page: Int): [User]
         userIndexByCategory(page: Int, categoryId: ID!): [User]
         userShow(id: ID!): User
-        userShowByDoc(doc: String!): User
-        userShowByEmail(email: String!): User
-        userShowByUser(user: String!): User
+        userShowByDoc(doc: String!): Boolean
+        userShowByEmail(email: String!): Boolean
+        userShowByUser(user: String!): Boolean
 
         ##===========> STATES <============##
         stateIndex: [State]
