@@ -126,6 +126,11 @@ const resolvers = {
             console.log(resp);
             return 'resp'
         },
+
+        //===========> USERS <============//
+        userStore: async (_, args, context) => {
+            return await UserController.store(args);
+        }
     },
 };
 

@@ -131,7 +131,7 @@ const typeDefs = gql`
         product: Product
     }
 
-    # =====================>>  QUERY  <<=====================#
+    #=====================>>  QUERY  <<=====================#
 
     type Query {
         ##===========> TESTS <============##
@@ -187,6 +187,112 @@ const typeDefs = gql`
         test(name: String!): String!
 
         singleUpload(file: String!): String!
+
+        ##===========> USER <============##
+        userStore(
+            name: String!,
+            doc: String!,
+            email: String!,
+            phone1: String!,
+            phone2: String!,
+            user: String!,
+            birth: String!,
+            password: String!,
+            type: String!,
+            cep: String!,
+            state: String!,
+            city: String!,
+            district: String!,
+            street: String!,
+            complement: String,
+            number: Int!
+        ): ID
+
+        userUpdate(
+            id: ID!,
+            name: String!,
+            doc: String!,
+            email: String!,
+            phone1: String!,
+            phone2: String!,
+            user: String!,
+            birth: String!
+        ): String
+
+        userDelete(
+            id: ID!
+        ): String
+
+        ##===========> BRAND <============##
+        brandStore(
+            brandDescription: String!,
+        ): Brand
+
+        brandUpdate(
+            id: ID!
+            brandDescription: String!
+        ): String
+
+        brandDelete(
+            id: ID!
+        ): String
+
+        ##===========> SIZE <============##
+        sizeStore(
+            sizeDescription: String!,
+        ): Size
+
+        sizeUpdate(
+            id: ID!
+            sizeDescription: String!
+        ): String
+
+        sizeDelete(
+            id: ID!
+        ): String
+
+        ##===========> PRODUCT <============##
+        productStore(
+            BrandId: ID!,
+            SizeId: ID!,
+            SubcategoryId: ID!,
+            name: String!,
+            description: String,
+            price: Float!,
+            stock: Int!,
+        ): Product
+
+        productUpdate(
+            id: ID!,
+            brandId: ID!,
+            sizeId: ID!,
+            subcategoryId: ID!,
+            description: String!,
+            price: Float!,
+            stock: Int!,
+        ): String
+
+        productDelete(
+            id: ID!,
+        ): String
+
+        ##===========> ORDER <============##
+        ordertStore (
+            providerId: ID!,
+            value: Float!,
+            delivery: String!,
+            cash: String!,
+            cashBack: Float!,
+            observation: String,
+            products: [OrderListProduct!]
+        ): Order
+
+        orderChangeStatus (
+            id: ID!,
+            status: String,
+            timeWait: Int,
+            reason: String
+        ): String
     }
 `;
 

@@ -4,6 +4,7 @@ const { User } = require('../models');
 const { createError, createToken, errorResponse } = require('../utils');
 
 module.exports = {
+    // =====================>>  QUERY  <<===================== //
     async login(args) {
         try {
             const { user, password, playId } = args;
@@ -41,5 +42,7 @@ module.exports = {
         } catch (error) {
             return errorResponse(error);
         }
-    }
+    },
+
+    // =====================>>  MUTATION  <<===================== //
 }

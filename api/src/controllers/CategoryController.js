@@ -2,6 +2,7 @@ const { Category } = require('../models');
 const {  errorResponse, isAuthenticated } = require('../utils');
 
 module.exports = {
+    // =====================>>  QUERY  <<===================== //
     async index () {
         try {
             return await Category.findAll({
@@ -12,4 +13,6 @@ module.exports = {
             return errorResponse(error);
         }
     },
+
+    // =====================>>  MUTATION  <<===================== //
 }

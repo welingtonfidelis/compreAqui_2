@@ -1,7 +1,10 @@
-const { User, Address, Category } = require('../models');
+const { User, Address, Category, sequelize } = require('../models');
 const {  errorResponse, isAuthenticated } = require('../utils');
+const bcrypt = require('bcrypt');
+const BCRYPT_SALTS = parseInt(process.env.BCRYPT_SALTS) || 10;
 
 module.exports = {
+    // =====================>>  QUERY  <<===================== //
     async index (args, context) {
         try {
             isAuthenticated(context);
@@ -128,4 +131,99 @@ module.exports = {
             return errorResponse(error);
         }
     },
+
+    // =====================>>  MUTATION  <<===================== //
+    async store (args) {
+        const transaction = await sequelize.transaction();
+
+        try {
+            const {
+                name, doc, email, phone1, phone2, user, birth, type,
+                cep, state, city, district, street, complement, number,
+            } = args;
+
+            // const AddressId = query.dataValues.id;
+            const password = bcrypt.hashSync(args.password, BCRYPT_SALTS);
+
+            const query = await User.create({
+                name, doc, email, phone1, phone2,
+                user, birth, password, type
+            });
+
+            await Address.create({
+                ...args, userId: query.id
+            });
+
+            await transaction.commit();
+            return query.id;
+
+        } catch (error) {
+            await transaction.rollback();
+            return errorResponse(error);
+        }
+    },
+    // userUpdate: async (_, args) => {
+    //     const notAuthenticated = isAuthenticated(args);
+    //     if (notAuthenticated) return notAuthenticated;
+
+    //     let query = null;
+    //     try {
+    //         const {
+    //             id, name, doc, email, phone1, phone2, user, birth, password, type,
+    //             AddressId, cep, state, city, district, street, complemen, number,
+    //         } = args;
+
+    //         query = await Address.update({
+    //             cep, state, city, district,
+    //             street, complemen, number,
+    //         },
+    //             {
+    //                 return: true,
+    //                 where: {
+    //                     id: AddressId
+    //                 }
+    //             }
+    //         );
+
+    //         query = await User.update({
+    //             name, doc, email, phone1, phone2,
+    //             user, birth, password, type, AddressId
+    //         },
+    //             {
+    //                 return: true,
+    //                 where: {
+    //                     id
+    //                 }
+    //             }
+    //         );
+
+    //         query = query[0];
+
+    //     } catch (error) {
+    //         const err = error.stack || error.errors || error.message || error;
+    //         console.warn(err);
+    //     }
+    //     return query;
+    // },
+    // userDelete: async (_, args) => {
+    //     const notAuthenticated = isAuthenticated(args);
+    //     if (notAuthenticated) return notAuthenticated;
+
+    //     let query = null;
+    //     try {
+    //         const { id } = args;
+
+    //         query = await User.destroy({
+    //             where: {
+    //                 id
+    //             }
+    //         });
+
+    //     } catch (error) {
+    //         const err = error.stack || error.errors || error.message || error;
+    //         console.warn(err);
+    //     }
+
+    //     return query;
+    // },
 }

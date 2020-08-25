@@ -3,6 +3,7 @@ const { User, Product, ProductPhoto, Brand, Size } = require('../models');
 const {  errorResponse, isAuthenticated } = require('../utils');
 
 module.exports = {
+    // =====================>>  QUERY  <<===================== //
     async count (args, context) {
         try {
             isAuthenticated(context);
@@ -83,4 +84,6 @@ module.exports = {
             return errorResponse(error);
         }
     },
+
+    // =====================>>  MUTATION  <<===================== //
 }
