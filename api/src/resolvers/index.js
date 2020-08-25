@@ -130,7 +130,13 @@ const resolvers = {
         //===========> USERS <============//
         userStore: async (_, args, context) => {
             return await UserController.store(args);
-        }
+        },
+        userUpdate: async (_, args, context) => {
+            return await UserController.update(args, context);
+        },
+        userDelete: async (_, args, context) => {
+            return await UserController.delete(args, context);
+        },
     },
 };
 

@@ -1,6 +1,6 @@
 const { ApolloError } = require('apollo-server');
 const jwt = require('jsonwebtoken');
-
+const { sequelize } = require('../models');
 const SECRET = process.env.SECRET;
 
 module.exports = {
@@ -51,6 +51,37 @@ module.exports = {
 
     isAuthenticated(context) {
         if (!context.loggedIn) throw { code: 401, message: 'Not Authorized' };
+        return;
+    },
+
+    validateInput(obj, schema) {
+        const { error } = schema.validate({...obj}, { abortEarly: false });
+
+        if (error) {
+            throw {
+                message: error.message,
+                code: 400
+            }
+        }
+
+        return;
+    },
+
+    async validateId(id, table) {
+        const [query] = await sequelize.query(
+            `SELECT id 
+            FROM ${table}
+            WHERE id = ${id}`,
+            { type: sequelize.QueryTypes.SELECT }
+        );
+
+        if(!query) {
+            throw {
+                message: "Id not found",
+                code: 400
+            }
+        }
+
         return;
     }
 }

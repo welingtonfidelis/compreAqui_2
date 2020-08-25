@@ -194,7 +194,7 @@ const typeDefs = gql`
             doc: String!,
             email: String!,
             phone1: String!,
-            phone2: String!,
+            phone2: String,
             user: String!,
             birth: String!,
             password: String!,
@@ -214,14 +214,14 @@ const typeDefs = gql`
             doc: String!,
             email: String!,
             phone1: String!,
-            phone2: String!,
+            phone2: String,
             user: String!,
             birth: String!
-        ): String
+        ): Boolean
 
         userDelete(
             id: ID!
-        ): String
+        ): Boolean
 
         ##===========> BRAND <============##
         brandStore(

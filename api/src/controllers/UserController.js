@@ -1,11 +1,14 @@
 const { User, Address, Category, sequelize } = require('../models');
-const {  errorResponse, isAuthenticated } = require('../utils');
+const { errorResponse, isAuthenticated, validateInput, validateId } = require('../utils');
 const bcrypt = require('bcrypt');
+const userCreate = require('../services/validation/user/create');
+const userUpdate = require('../services/validation/user/update');
+const userDelete = require('../services/validation/user/delete');
 const BCRYPT_SALTS = parseInt(process.env.BCRYPT_SALTS) || 10;
 
 module.exports = {
     // =====================>>  QUERY  <<===================== //
-    async index (args, context) {
+    async index(args, context) {
         try {
             isAuthenticated(context);
             const { page = 1 } = args;
@@ -31,7 +34,7 @@ module.exports = {
         }
     },
 
-    async indexByCategory (args, context) {
+    async indexByCategory(args, context) {
         try {
             isAuthenticated(context);
             const { page = 1, categoryId } = args;
@@ -57,7 +60,7 @@ module.exports = {
         }
     },
 
-    async show (args, context) {
+    async show(args, context) {
         try {
             isAuthenticated(context);
             const { id } = args;
@@ -79,7 +82,7 @@ module.exports = {
         }
     },
 
-    async showByDoc (args) {
+    async showByDoc(args) {
         try {
             const { doc } = args;
 
@@ -97,7 +100,7 @@ module.exports = {
         }
     },
 
-    async showByEmail (args) {
+    async showByEmail(args) {
         try {
             const { email } = args;
 
@@ -115,7 +118,7 @@ module.exports = {
         }
     },
 
-    async showByUser (args) {
+    async showByUser(args) {
         try {
             const { user } = args;
 
@@ -133,16 +136,16 @@ module.exports = {
     },
 
     // =====================>>  MUTATION  <<===================== //
-    async store (args) {
+    async store(args) {
         const transaction = await sequelize.transaction();
 
         try {
+            validateInput(args, userCreate);
+
             const {
-                name, doc, email, phone1, phone2, user, birth, type,
-                cep, state, city, district, street, complement, number,
+                name, doc, email, phone1, phone2, user, birth, type
             } = args;
 
-            // const AddressId = query.dataValues.id;
             const password = bcrypt.hashSync(args.password, BCRYPT_SALTS);
 
             const query = await User.create({
@@ -162,68 +165,47 @@ module.exports = {
             return errorResponse(error);
         }
     },
-    // userUpdate: async (_, args) => {
-    //     const notAuthenticated = isAuthenticated(args);
-    //     if (notAuthenticated) return notAuthenticated;
+    update: async (args, context) => {
+        try {
+            isAuthenticated(context);
+            validateInput(args, userUpdate);
 
-    //     let query = null;
-    //     try {
-    //         const {
-    //             id, name, doc, email, phone1, phone2, user, birth, password, type,
-    //             AddressId, cep, state, city, district, street, complemen, number,
-    //         } = args;
+            const { id } = args;
 
-    //         query = await Address.update({
-    //             cep, state, city, district,
-    //             street, complemen, number,
-    //         },
-    //             {
-    //                 return: true,
-    //                 where: {
-    //                     id: AddressId
-    //                 }
-    //             }
-    //         );
+            const [query] = await User.update(
+                { ...args },
+                {
+                    return: true,
+                    where: {
+                        id
+                    }
+                }
+            );
 
-    //         query = await User.update({
-    //             name, doc, email, phone1, phone2,
-    //             user, birth, password, type, AddressId
-    //         },
-    //             {
-    //                 return: true,
-    //                 where: {
-    //                     id
-    //                 }
-    //             }
-    //         );
+            return query ? true : false;
 
-    //         query = query[0];
+        } catch (error) {
+            return errorResponse(error);
+        }
+    },
+    async delete (args, context) {
+        try {
+            isAuthenticated(context);
+            validateInput({ ...args }, userDelete);
+            
+            const { id } = args;
+            await validateId(id, `"Users"`);
 
-    //     } catch (error) {
-    //         const err = error.stack || error.errors || error.message || error;
-    //         console.warn(err);
-    //     }
-    //     return query;
-    // },
-    // userDelete: async (_, args) => {
-    //     const notAuthenticated = isAuthenticated(args);
-    //     if (notAuthenticated) return notAuthenticated;
+            const query = await User.destroy({
+                where: {
+                    id
+                }
+            });
 
-    //     let query = null;
-    //     try {
-    //         const { id } = args;
+            return query ? true : false;
 
-    //         query = await User.destroy({
-    //             where: {
-    //                 id
-    //             }
-    //         });
-
-    //     } catch (error) {
-    //         const err = error.stack || error.errors || error.message || error;
-    //         console.warn(err);
-    //     }
-
-    //     return query;
-    // },
+        } catch (error) {
+            return errorResponse(error);
+        }
+    },
 }
