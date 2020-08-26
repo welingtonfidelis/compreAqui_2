@@ -1,5 +1,8 @@
 const { Size } = require('../models');
-const {  errorResponse, isAuthenticated } = require('../utils');
+const {  errorResponse, isAuthenticated, validateInput, validateId } = require('../utils');
+const sizeCreate = require('../services/validation/size/create');
+const sizeUpdate = require('../services/validation/size/update');
+const sizeDelete = require('../services/validation/size/delete');
 
 module.exports = {
     // =====================>>  QUERY  <<===================== //
@@ -52,4 +55,65 @@ module.exports = {
     },
 
     // =====================>>  MUTATION  <<===================== //
+    store: async (args, context) => {
+        try {
+            isAuthenticated(context);
+            validateInput(args, sizeCreate);
+
+            const { name } = args, { userId } = context;
+
+            const { id } = await Size.create({
+                providerId: userId, name
+            });
+
+            return id;
+
+        } catch (error) {
+            return errorResponse(error);
+        }
+    },
+    update: async (args, contenxt) => {
+        try {
+            isAuthenticated(contenxt);
+            validateInput(args, sizeUpdate);
+
+            const { id, name } = args;
+            await validateId(id, `"Sizes"`);
+
+            const [query] = await Size.update({
+                name
+            },
+                {
+                    return: true,
+                    where: {
+                        id
+                    }
+                }
+            );
+
+            return query ? true : false;
+
+        } catch (error) {
+            return errorResponse(error);
+        }
+    },
+    delete: async (args, context) => {
+        try {
+            isAuthenticated(context);
+
+            const { id } = args;
+            await validateId(id, `"Sizes"`);
+
+            const query = await Size.destroy({
+                where: {
+                    id
+                }
+            });
+
+            return query ? true : false;
+
+        } catch (error) {
+            return errorResponse(error);
+        }
+    },
 }

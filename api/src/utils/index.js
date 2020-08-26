@@ -71,7 +71,7 @@ module.exports = {
         const [query] = await sequelize.query(
             `SELECT id 
             FROM ${table}
-            WHERE id = ${id}`,
+            WHERE id = ${id} AND "deletedAt" IS NULL`,
             { type: sequelize.QueryTypes.SELECT }
         );
 

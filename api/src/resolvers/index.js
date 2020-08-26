@@ -148,6 +148,17 @@ const resolvers = {
         brandDelete: async (_, args, context) => {
             return await BrandController.delete(args, context);
         },
+
+        //===========> BRANDS <============//
+        sizeStore: async (_, args, context) => {
+            return await SizeController.store(args, context);
+        },
+        sizeUpdate: async (_, args, context) => {
+            return await SizeController.update(args, context);
+        },
+        sizeDelete: async (_, args, context) => {
+            return await SizeController.delete(args, context);
+        },
     },
 };
 

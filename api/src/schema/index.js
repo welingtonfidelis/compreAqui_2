@@ -240,16 +240,16 @@ const typeDefs = gql`
         ##===========> SIZE <============##
         sizeStore(
             name: String!,
-        ): Size
+        ): ID
 
         sizeUpdate(
             id: ID!
             name: String!
-        ): String
+        ): Boolean
 
         sizeDelete(
             id: ID!
-        ): String
+        ): Boolean
 
         ##===========> PRODUCT <============##
         productStore(
