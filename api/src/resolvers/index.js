@@ -128,7 +128,7 @@ const resolvers = {
         },
 
         //===========> USERS <============//
-        userStore: async (_, args, context) => {
+        userStore: async (_, args) => {
             return await UserController.store(args);
         },
         userUpdate: async (_, args, context) => {
@@ -136,6 +136,17 @@ const resolvers = {
         },
         userDelete: async (_, args, context) => {
             return await UserController.delete(args, context);
+        },
+
+        //===========> BRANDS <============//
+        brandStore: async (_, args, context) => {
+            return await BrandController.store(args, context);
+        },
+        brandUpdate: async (_, args, context) => {
+            return await BrandController.update(args, context);
+        },
+        brandDelete: async (_, args, context) => {
+            return await BrandController.delete(args, context);
         },
     },
 };

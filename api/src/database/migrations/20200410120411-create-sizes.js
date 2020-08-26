@@ -17,7 +17,7 @@ module.exports = {
           key: 'id',
         }
       },
-      sizeDescription: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false
       },
@@ -39,7 +39,7 @@ module.exports = {
         await queryInterface.addIndex(
           'Sizes',
           {
-            fields: ['sizeDescription'],
+            fields: ['name'],
             transaction,
           }
         );

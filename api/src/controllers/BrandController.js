@@ -1,5 +1,8 @@
 const { Brand } = require('../models');
-const {  errorResponse, isAuthenticated } = require('../utils');
+const { errorResponse, isAuthenticated, validateInput, validateId } = require('../utils');
+const brandCreate = require('../services/validation/brand/create');
+const brandUpdate = require('../services/validation/brand/update');
+const brandDelete = require('../services/validation/brand/delete');
 
 module.exports = {
     // =====================>>  QUERY  <<===================== //
@@ -53,4 +56,64 @@ module.exports = {
     },
 
     // =====================>>  MUTATION  <<===================== //
+    store: async (args, context) => {
+        try {
+            isAuthenticated(context);
+            validateInput(args, brandCreate);
+
+            const { name } = args, { userId } = context;
+
+            const { id } = await Brand.create({
+                providerId: userId, name
+            });
+
+            return id;
+
+        } catch (error) {
+            return errorResponse(error);
+        }
+    },
+    update: async (args, context) => {
+        try {
+            isAuthenticated(context);
+            validateInput(args, brandUpdate);
+
+            const { id } = args;
+            await validateId(id, `"Brands"`);
+
+            const [query] = await Brand.update(
+                { ...args },
+                {
+                    return: true,
+                    where: {
+                        id
+                    }
+                }
+            );
+
+            return query ? true : false;
+
+        } catch (error) {
+            return errorResponse(error);
+        }
+    },
+    delete: async (args, context) => {
+        try {
+            isAuthenticated(context);
+
+            const { id } = args;
+            await validateId(id, `"Brands"`);
+
+            const query = await Brand.destroy({
+                where: {
+                    id
+                }
+            });
+
+            return query ? true : false;
+
+        } catch (error) {
+            return errorResponse(error);
+        }
+    },
 }

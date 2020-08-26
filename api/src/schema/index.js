@@ -66,13 +66,13 @@ const typeDefs = gql`
     type Brand {
         id: ID,
         providerId: ID,
-        brandDescription: String
+        name: String
     }
     
     type Size {
         id: ID,
         providerId: ID,
-        sizeDescription: String
+        name: String
     }
     
     type Product {
@@ -225,26 +225,26 @@ const typeDefs = gql`
 
         ##===========> BRAND <============##
         brandStore(
-            brandDescription: String!,
-        ): Brand
+            name: String!,
+        ): ID
 
         brandUpdate(
             id: ID!
-            brandDescription: String!
-        ): String
+            name: String!
+        ): Boolean
 
         brandDelete(
             id: ID!
-        ): String
+        ): Boolean
 
         ##===========> SIZE <============##
         sizeStore(
-            sizeDescription: String!,
+            name: String!,
         ): Size
 
         sizeUpdate(
             id: ID!
-            sizeDescription: String!
+            name: String!
         ): String
 
         sizeDelete(

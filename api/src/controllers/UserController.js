@@ -148,7 +148,7 @@ module.exports = {
 
             const password = bcrypt.hashSync(args.password, BCRYPT_SALTS);
 
-            const query = await User.create({
+            const { id } = await User.create({
                 name, doc, email, phone1, phone2,
                 user, birth, password, type
             });
@@ -158,7 +158,7 @@ module.exports = {
             });
 
             await transaction.commit();
-            return query.id;
+            return id;
 
         } catch (error) {
             await transaction.rollback();
@@ -171,6 +171,7 @@ module.exports = {
             validateInput(args, userUpdate);
 
             const { id } = args;
+            await validateId(id, `"Users"`);
 
             const [query] = await User.update(
                 { ...args },

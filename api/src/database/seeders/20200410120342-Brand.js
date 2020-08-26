@@ -6,7 +6,7 @@ module.exports = {
     for (let i = 1; i <= 20; i++) {
       brands.push(
         {
-          brandDescription: `Marca ${i}`,
+          name: `Marca ${i}`,
           providerId: i,
           createdAt: new Date(),
           updatedAt: new Date()

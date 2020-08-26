@@ -6,7 +6,7 @@ module.exports = {
     for (let i = 1; i <= 20; i++) {
       sizes.push(
         {
-          sizeDescription: `Tamanho ${i}`,
+          name: `Tamanho ${i}`,
           providerId: i,
           createdAt: new Date(),
           updatedAt: new Date()

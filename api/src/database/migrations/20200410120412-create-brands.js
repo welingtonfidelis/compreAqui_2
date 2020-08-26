@@ -17,7 +17,7 @@ module.exports = {
           key: 'id',
         }
       },
-      brandDescription: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false
       },
@@ -39,7 +39,7 @@ module.exports = {
         await queryInterface.addIndex(
           'Brands',
           {
-            fields: ['brandDescription'],
+            fields: ['name'],
             transaction,
           }
         );

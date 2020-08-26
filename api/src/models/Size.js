@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
     const Size = sequelize.define('Size', {
         providerId: DataTypes.INTEGER,
-        sizeDescription: DataTypes.STRING,
+        name: DataTypes.STRING,
     },
         {
             tableName: 'Sizes',
