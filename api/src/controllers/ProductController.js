@@ -1,10 +1,13 @@
 const { Op } = require('sequelize');
 const { User, Product, ProductPhoto, Brand, Size } = require('../models');
-const {  errorResponse, isAuthenticated } = require('../utils');
+const { errorResponse, isAuthenticated, validateInput, validateId } = require('../utils');
+const productCreate = require('../services/validation/product/create');
+const productUpdate = require('../services/validation/product/update');
+const productDelete = require('../services/validation/product/delete');
 
 module.exports = {
     // =====================>>  QUERY  <<===================== //
-    async count (args, context) {
+    async count(args, context) {
         try {
             isAuthenticated(context);
             const { providerId } = args, { userType, userId } = context;
@@ -20,7 +23,7 @@ module.exports = {
         }
     },
 
-    async index (args, context) {
+    async index(args, context) {
         try {
             isAuthenticated(context);
             const { providerId, page = 1 } = args, { userType, userId } = context;
@@ -50,7 +53,7 @@ module.exports = {
         }
     },
 
-    async show (args, context) {
+    async show(args, context) {
         try {
             isAuthenticated(context);
             const { id } = args;
@@ -86,4 +89,64 @@ module.exports = {
     },
 
     // =====================>>  MUTATION  <<===================== //
+    async store(args, context) {
+        try {
+            isAuthenticated(context);
+            validateInput(args, productCreate);
+
+            const { userId } = context;
+            const { id } = await Product.create({
+                ...args, providerId: userId
+            });
+
+            return id;
+
+        } catch (error) {
+            return errorResponse(error);
+        }
+    },
+    async update(args, context) {
+        try {
+            isAuthenticated(context);
+            validateInput(args, productUpdate);
+
+            const { id } = args;
+            await validateId(id, `"Products"`);
+
+            const [query] = await Product.update(
+                { ...args },
+                {
+                    return: true,
+                    where: {
+                        id
+                    }
+                }
+            );
+
+            return query ? true : false;
+
+        } catch (error) {
+            return errorResponse(error);
+        }
+    },
+    async delete(args, context) {
+        try {
+            isAuthenticated(context);
+            validateInput(args, productDelete);
+
+            const { id } = args;
+            await validateId(id, `"Products"`);
+
+            const query = await Product.destroy({
+                where: {
+                    id
+                }
+            });
+
+            return query ? true : false;
+
+        } catch (error) {
+            return errorResponse(error);
+        }
+    },
 }

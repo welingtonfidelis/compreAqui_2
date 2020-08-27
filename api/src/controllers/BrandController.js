@@ -100,6 +100,7 @@ module.exports = {
     delete: async (args, context) => {
         try {
             isAuthenticated(context);
+            validateInput(args, brandDelete);
 
             const { id } = args;
             await validateId(id, `"Brands"`);

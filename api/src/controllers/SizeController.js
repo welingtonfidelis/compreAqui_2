@@ -1,5 +1,5 @@
 const { Size } = require('../models');
-const {  errorResponse, isAuthenticated, validateInput, validateId } = require('../utils');
+const { errorResponse, isAuthenticated, validateInput, validateId } = require('../utils');
 const sizeCreate = require('../services/validation/size/create');
 const sizeUpdate = require('../services/validation/size/update');
 const sizeDelete = require('../services/validation/size/delete');
@@ -44,7 +44,7 @@ module.exports = {
         try {
             isAuthenticated(context);
             const { id } = args;
-            
+
             return await Size.findOne({
                 where: { id },
             });
@@ -77,12 +77,11 @@ module.exports = {
             isAuthenticated(contenxt);
             validateInput(args, sizeUpdate);
 
-            const { id, name } = args;
+            const { id } = args;
             await validateId(id, `"Sizes"`);
 
-            const [query] = await Size.update({
-                name
-            },
+            const [query] = await Size.update(
+                { ...args },
                 {
                     return: true,
                     where: {
@@ -100,6 +99,7 @@ module.exports = {
     delete: async (args, context) => {
         try {
             isAuthenticated(context);
+            validateInput(args, sizeDelete);
 
             const { id } = args;
             await validateId(id, `"Sizes"`);

@@ -16,8 +16,10 @@
   "license": "ISC",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
+    "@sendgrid/mail": "^7.2.4",
     "apollo-server": "^2.16.1",
     "aws-sdk": "^2.733.0",
+    "axios": "^0.20.0",
     "bcrypt": "^5.0.0",
     "dotenv": "^8.2.0",
     "faker": "^4.1.0",

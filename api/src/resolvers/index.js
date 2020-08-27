@@ -159,6 +159,25 @@ const resolvers = {
         sizeDelete: async (_, args, context) => {
             return await SizeController.delete(args, context);
         },
+
+        //===========> PRODUCTS <============//
+        productStore: async (_, args, context) => {
+            return await ProductController.store(args, context);
+        },
+        productUpdate: async (_, args, context) => {
+            return await ProductController.update(args, context);
+        },
+        productDelete: async (_, args, context) => {
+            return await ProductController.delete(args, context);
+        },
+
+        //===========> ORDERS <============//
+        orderStore: async (_, args, context) => {
+            return await OrderController.store(args, context);
+        },
+        orderChangeStatus: async (_, args, context) => {
+            return await OrderController.status(args, context);
+        },
     },
 };
 

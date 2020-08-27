@@ -142,19 +142,14 @@ module.exports = {
         try {
             validateInput(args, userCreate);
 
-            const {
-                name, doc, email, phone1, phone2, user, birth, type
-            } = args;
-
             const password = bcrypt.hashSync(args.password, BCRYPT_SALTS);
 
             const { id } = await User.create({
-                name, doc, email, phone1, phone2,
-                user, birth, password, type
+                ...args, password
             });
 
             await Address.create({
-                ...args, userId: query.id
+                ...args, userId: id
             });
 
             await transaction.commit();

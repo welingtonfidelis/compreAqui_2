@@ -253,46 +253,47 @@ const typeDefs = gql`
 
         ##===========> PRODUCT <============##
         productStore(
-            BrandId: ID!,
-            SizeId: ID!,
-            SubcategoryId: ID!,
+            brandId: ID!,
+            sizeId: ID!,
+            subcategoryId: ID!,
             name: String!,
             description: String,
             price: Float!,
             stock: Int!,
-        ): Product
+        ): ID
 
         productUpdate(
             id: ID!,
             brandId: ID!,
             sizeId: ID!,
             subcategoryId: ID!,
+            name: String!,
             description: String!,
             price: Float!,
             stock: Int!,
-        ): String
+        ): Boolean
 
         productDelete(
             id: ID!,
-        ): String
+        ): Boolean
 
         ##===========> ORDER <============##
-        ordertStore (
+        orderStore (
             providerId: ID!,
             value: Float!,
-            delivery: String!,
-            cash: String!,
+            delivery: Boolean!,
+            cash: Boolean!,
             cashBack: Float!,
             observation: String,
             products: [OrderListProduct!]
-        ): Order
+        ): ID
 
         orderChangeStatus (
             id: ID!,
-            status: String,
+            status: String!,
             timeWait: Int,
             reason: String
-        ): String
+        ): Boolean
     }
 `;
 
