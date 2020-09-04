@@ -55,7 +55,7 @@ module.exports = {
     },
 
     validateInput(obj, schema) {
-        const { error } = schema.validate({...obj}, { abortEarly: false });
+        const { error } = schema.validate(obj, { abortEarly: false });
 
         if (error) {
             throw {

@@ -1,0 +1,28 @@
+.buton-block {
+    font-weight: bold;
+    font-size: 1.3rem;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 10px;
+    width: 100%;
+    transition: .5s;
+}
+
+.buton-block:hover {
+    cursor: pointer;
+    filter: brightness(.8);
+}
+
+.button-secondary-block {
+    @extend .buton-block;
+    border: 1px solid #F2BB16;
+    border-radius: 4px;
+    color: #F2BB16;
+}
+
+.button-primary-block {
+    @extend .buton-block;
+    background-color: #000;
+    border-radius: 4px;
+    color: #F2BB16;
+}

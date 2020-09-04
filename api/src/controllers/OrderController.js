@@ -29,7 +29,7 @@ module.exports = {
             isAuthenticated(context);
             const { page = 1, status } = args, { userId, userType } = context;
 
-            let where = { ClientId: userId };
+            let where = { clientId: userId };
             let include = [
                 {
                     model: User,
@@ -43,7 +43,7 @@ module.exports = {
                 },
                 {
                     model: OrderProduct,
-                    as: 'orderProduct',
+                    as: 'orderProducts',
                     include: [
                         {
                             model: Product,

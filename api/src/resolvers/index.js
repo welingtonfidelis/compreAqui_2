@@ -1,10 +1,4 @@
 const Upload = require('../services/Upload');
-const { errorResponse, createError, isAuthenticated } = require('../utils');
-const { Op } = require('sequelize');
-const {
-    User, Category, Address, State, Brand, Size, Subcategory,
-    Product, ProductPhoto, Order, OrderProduct
-} = require('../models');
 const SessionController = require('../controllers/SessionController');
 const StateController = require('../controllers/StateController');
 const UserController = require('../controllers/UserController');
@@ -17,7 +11,6 @@ const OrderController = require('../controllers/OrderController');
 
 const resolvers = {
     // =====================>>  QUERY  <<=====================//
-
     Query: {
         //===========> TESTS <============//
         test: () => {
