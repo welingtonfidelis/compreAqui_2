@@ -110,7 +110,7 @@ module.exports = {
             isAuthenticated(context);
             validateInput(args, productUpdate);
 
-            const { id } = args;
+            const { id } = args, { userId } = context;
             await validateId(id, `"Products"`);
 
             const [query] = await Product.update(
@@ -118,7 +118,8 @@ module.exports = {
                 {
                     return: true,
                     where: {
-                        id
+                        id,
+                        providerId: userId
                     }
                 }
             );
@@ -134,12 +135,13 @@ module.exports = {
             isAuthenticated(context);
             validateInput(args, productDelete);
 
-            const { id } = args;
+            const { id } = args, { userId } = context;
             await validateId(id, `"Products"`);
 
             const query = await Product.destroy({
                 where: {
-                    id
+                    id,
+                    providerId: userId
                 }
             });
 

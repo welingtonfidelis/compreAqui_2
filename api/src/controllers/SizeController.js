@@ -72,12 +72,12 @@ module.exports = {
             return errorResponse(error);
         }
     },
-    update: async (args, contenxt) => {
+    update: async (args, context) => {
         try {
-            isAuthenticated(contenxt);
+            isAuthenticated(context);
             validateInput(args, sizeUpdate);
 
-            const { id } = args;
+            const { id } = args, { userId } = context;
             await validateId(id, `"Sizes"`);
 
             const [query] = await Size.update(
@@ -85,7 +85,8 @@ module.exports = {
                 {
                     return: true,
                     where: {
-                        id
+                        id,
+                        providerId: userId
                     }
                 }
             );
@@ -101,12 +102,13 @@ module.exports = {
             isAuthenticated(context);
             validateInput(args, sizeDelete);
 
-            const { id } = args;
+            const { id } = args, { userId } = context;
             await validateId(id, `"Sizes"`);
 
             const query = await Size.destroy({
                 where: {
-                    id
+                    id,
+                    providerId: userId
                 }
             });
 

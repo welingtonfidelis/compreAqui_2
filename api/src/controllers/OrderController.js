@@ -79,7 +79,7 @@ module.exports = {
             isAuthenticated(context);
             const { id } = args, { userId, userType } = context;
 
-            let where = { id };
+            let where = { id, clientId: userId };
             let include = [
                 {
                     model: User,
@@ -104,7 +104,7 @@ module.exports = {
                 }
             ]
             if (userType === 'commercial') {
-                where = { providerId: userId };
+                where = { id, providerId: userId };
                 include[0].as = "client";
             }
 
@@ -193,7 +193,7 @@ module.exports = {
             isAuthenticated(context);
             validateInput(args, orderStatus);
 
-            const { id } = args;
+            const { id } = args, { userId } = context;
             await validateId(id, `"Orders"`);
 
             const [query] = await Order.update(
@@ -201,7 +201,8 @@ module.exports = {
                 {
                     return: true,
                     where: {
-                        id
+                        id,
+                        providerId: userId
                     }
                 }
             );

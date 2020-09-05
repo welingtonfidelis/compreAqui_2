@@ -1,15 +1,17 @@
+import { Autocomplete } from '@material-ui/lab';
 
-export default function Select ({ label, name, options, ...rest }){
+import Input from '../Input';
+
+export default function Select({ label, options, ...rest }) {
     return (
         <div className="select-block">
-            <label htmlFor={name}>{label}</label>
-            <select value="" id={name} {...rest} >
-                <option value="" disabled hidden>Selecione uma opção</option>
-
-                {options.map(el => {
-                    return <option key={el.value} value={el.value}>{el.label}</option>
-                })}
-            </select>
+            <Autocomplete
+                id={label}
+                options={options}
+                {...rest}
+                getOptionLabel={(option) => option.name || option.title}
+                renderInput={(params) => <Input label={label} {...params} />}
+            />
         </div>
     )
 }

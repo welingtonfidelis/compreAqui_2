@@ -1,0 +1,23 @@
+#new-user-content {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.new-user-image-photo {
+    width: 90px;
+    height: 90px;
+    border: 2px solid #F2BB16;
+    padding: 5px;
+    border-radius: 50%;
+    margin-top: 15px;
+}
+
+.new-user-form {
+    width: 65vw;
+}
+
+.new-user-form .input-block {
+    margin: 8px 0;
+}

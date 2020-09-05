@@ -10,6 +10,10 @@ import { useState } from 'react';
 export default function Home() {
   const [showPassword, setShowPassword] = useState(false);
 
+  const handleNewUser = () => {
+    Router.push('/NewUser');
+  }
+
   const handleSubmit = async () => {
     console.log('LOGAR');
 
@@ -39,7 +43,7 @@ export default function Home() {
         <ButtonSecondary label="Entrar"/>
         <b>Esqueci minha senha</b>
 
-        <ButtonPrimary label="Cadastre-se"/>
+        <ButtonPrimary label="Cadastre-se" onClick={handleNewUser}/>
       </div>
     </div>
   )
