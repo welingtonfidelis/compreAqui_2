@@ -1,8 +1,8 @@
 
 export default function ButtonSecondary({ label, name, ...rest }) {
     return (
-        <div className="button-secondary-block" {...rest}>
+        <button className="button-secondary-block" {...rest}>
             {label}
-        </div>
+        </button>
     )
 }

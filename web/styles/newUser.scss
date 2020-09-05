@@ -21,3 +21,15 @@
 .new-user-form .input-block {
     margin: 8px 0;
 }
+
+#new-user-content b {
+    font-size: 1.2rem;
+    color: #646464;
+    margin-top: 12px;
+    transition: .5s;
+}
+
+#new-user-content b:hover {
+    cursor: pointer;
+    filter: brightness(.8);
+}
