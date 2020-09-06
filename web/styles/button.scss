@@ -18,12 +18,26 @@
     @extend .buton-block;
     border: 1px solid #F2BB16;
     border-radius: 4px;
-    color: #F2BB16;
+    background: #fff;
+}
+
+.button-primary-block b {
+    color: #F2BB16 !important;
 }
 
 .button-primary-block {
     @extend .buton-block;
     background-color: #000;
     border-radius: 4px;
-    color: #F2BB16;
+}
+
+.button-primary-block b {
+    color: #F2BB16 !important;
+}
+
+.button-primary-block .MuiCircularProgress-root {
+    width: 20px !important;
+    height: 20px !important;
+    color: #F2BB16 !important;
+    float: right !important;
 }

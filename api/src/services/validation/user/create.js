@@ -5,6 +5,8 @@ module.exports = Joi.object({
         .min(3)
         .max(255)
         .required(),
+        
+    photo: Joi.string(),
 
     doc: Joi.string()
         .min(11)
@@ -17,12 +19,12 @@ module.exports = Joi.object({
 
     phone1: Joi.string()
         .min(8)
-        .max(16)
+        .max(17)
         .required(),
 
     phone2: Joi.string()
         .min(8)
-        .max(16),
+        .max(17),
 
     user: Joi.string()
         .min(3)
@@ -71,7 +73,5 @@ module.exports = Joi.object({
         .min(1)
         .required(),
 
-    complement: Joi.string()
-        .min(3)
-        .max(20),
+    complement: Joi.string(),
 });

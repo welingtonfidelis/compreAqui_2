@@ -1,8 +1,10 @@
+import { CircularProgress } from '@material-ui/core';
 
-export default function ButtonSecondary({ label, name, ...rest }) {
+export default function ButtonSecondary({ label, loading, ...rest }) {
     return (
         <button className="button-secondary-block" {...rest}>
-            {label}
+            <b>{label}</b>
+            { loading && <CircularProgress /> }
         </button>
     )
 }

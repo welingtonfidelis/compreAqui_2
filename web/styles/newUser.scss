@@ -6,12 +6,18 @@
 }
 
 .new-user-image-photo {
-    width: 90px;
-    height: 90px;
+    width: 110px;
+    height: 110px;
     border: 2px solid #F2BB16;
     padding: 5px;
     border-radius: 50%;
     margin-top: 15px;
+    transition: .5s;
+}
+
+.new-user-image-photo:hover {
+    cursor: pointer;
+    filter: brightness(.8);
 }
 
 .new-user-form {
@@ -25,11 +31,15 @@
 #new-user-content b {
     font-size: 1.2rem;
     color: #646464;
-    margin-top: 12px;
+    margin: 12px 0;
     transition: .5s;
 }
 
 #new-user-content b:hover {
     cursor: pointer;
     filter: brightness(.8);
+}
+
+#new-user-content .button-primary-block {
+    margin-top: 10px;
 }

@@ -1,4 +1,5 @@
 const { User, Address, Category, sequelize } = require('../models');
+const Upload = require('../services/Upload');
 const { errorResponse, isAuthenticated, validateInput, validateId } = require('../utils');
 const bcrypt = require('bcrypt');
 const userCreate = require('../services/validation/user/create');
@@ -142,10 +143,18 @@ module.exports = {
         try {
             validateInput(args, userCreate);
 
+            let photoUrl = null;
+            if(args.photo && args.photo !== '') {
+                const folder = args.type === 'client' ? 'client' : 'commercial';
+                const resp = await Upload.uploadImage(args.photo, folder, args.name);
+                
+                if(resp) photoUrl = resp.Location;
+            }
+
             const password = bcrypt.hashSync(args.password, BCRYPT_SALTS);
 
             const { id } = await User.create({
-                ...args, password
+                ...args, password, photoUrl
             });
 
             await Address.create({

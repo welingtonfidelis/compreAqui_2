@@ -205,7 +205,8 @@ const typeDefs = gql`
             district: String!,
             street: String!,
             complement: String,
-            number: Int!
+            number: Int!,
+            photo: String
         ): ID
 
         userUpdate(
