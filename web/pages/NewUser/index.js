@@ -9,6 +9,7 @@ import Input from '../../components/Input';
 import InputMask from '../../components/InputMask';
 import Select from '../../components/Select';
 import ButtonPrimary from '../../components/ButtonPrimary';
+import Alert from '../../components/Alert';
 import AlertInform from '../../components/AlertInform';
 
 import UserLogo from '../../assets/images/user.svg';
@@ -18,10 +19,13 @@ export default function Product() {
     const [states, setStates] = useState([]);
     const [categories, setCategories] = useState([]);
     const [showAlert, setShowAlert] = useState(false);
+    const [showAlertInform, setShowAlertInform] = useState(false);
     const [loading, setLoading] = useState(false);
     const [formData, setFormaData] = useState({});
-    const [alertText, setAlertText] = useState('Salvo com sucesso');
-    const [alertType, setAlertType] = useState('success');
+    const [alertText, setAlertText] = useState('');
+    const [alertType, setAlertType] = useState('');
+    const [alertInformText, setAlertInformText] = useState('');
+    const [alertInformTitle, setAlertInformTitle] = useState('');
 
     useEffect(() => {
         setLoading(true);
@@ -65,7 +69,6 @@ export default function Product() {
 
     const handleSaveUser = async (event) => {
         event.preventDefault()
-        console.log('SALVARE');
 
         try {
             const photo = formData.file ? await utils.fileToBase64(formData.file) : undefined;
@@ -102,16 +105,17 @@ export default function Product() {
             });
 
             const { data } = query;
-            if(data.userStore) {
-                alert();
-                Router.back();
-            }
+            if(data.userStore) alertInform();
             else alert('Houve um erro ao salvar', 'error');
-
+            
         } catch (error) {
             console.log(error);
             alert('Houve um erro ao salvar', 'error');
         }
+    }
+
+    const handleBackToLogin = () => {
+        Router.back();
     }
 
     const handleInputChange = (name, value) => {
@@ -122,6 +126,16 @@ export default function Product() {
         setAlertText(text);
         setAlertType(type);
         setShowAlert(true);
+    }
+
+    const alertInform = (title, text) => {
+        title = title ? title : 'Seja bem vindo';
+        text = text ? text : 'Seu cadastro foi efetuado com sucesso. Efetue o login' + 
+            ' com usuário/e-mail e senha cadastrado.';
+
+        setAlertInformText(text);
+        setAlertInformTitle(title);
+        setShowAlertInform(true);
     }
 
     const handleCep = async () => {
@@ -145,9 +159,134 @@ export default function Product() {
         setLoading(false);
     }
 
+    const handleMailAvaiability = async () => {
+        setLoading(true);
+        if(formData.email && formData.email !== '') {
+            try {
+                const query = await api.query({
+                    query: gql`
+                        query userByEmail ($email: String!) {
+                            userShowByEmail(email: $email)
+                        }
+                    `,
+                    variables: {
+                        email: formData.email
+                    }
+                });
+                
+                const { userShowByEmail } = query.data;
+                const div = document.getElementById("email");
+                if (userShowByEmail) {
+                  div.setCustomValidity("E-mail já em uso.");
+                  div.reportValidity();
+                } 
+                else div.setCustomValidity("");
+    
+            } catch (error) {
+                console.log(error);
+                alert('Houve um erro ao checar e-mail inserido', 'error');
+            }
+        }
+        setLoading(false);
+    }
+
+    const handleDocAvaiability = async () => {
+        setLoading(true);
+        if(formData.doc && formData.doc !== '') {
+            try {
+                const query = await api.query({
+                    query: gql`
+                        query userByDoc ($doc: String!) {
+                            userShowByDoc(doc: $doc)
+                        }
+                    `,
+                    variables: {
+                        doc: formData.doc
+                    }
+                });
+                
+                const { userShowByDoc } = query.data;
+                const div = document.getElementById("doc");
+                if (userShowByDoc) {
+                  div.setCustomValidity("Documento já em uso.");
+                  div.reportValidity();
+                } 
+                else div.setCustomValidity("");
+    
+            } catch (error) {
+                console.log(error);
+                alert('Houve um erro ao checar documento inserido', 'error');
+            }
+        }
+        setLoading(false);
+    }
+
+    const handleUserAvaiability = async () => {
+        setLoading(true);
+        if(formData.user && formData.user !== '') {
+            try {
+                const query = await api.query({
+                    query: gql`
+                        query userByUser ($user: String!) {
+                            userShowByUser(user: $user)
+                        }
+                    `,
+                    variables: {
+                        user: formData.user
+                    }
+                });
+                
+                const { userShowByUser } = query.data;
+                const div = document.getElementById("user");
+                if (userShowByUser) {
+                  div.setCustomValidity("Usuário já em uso.");
+                  div.reportValidity();
+                } 
+                else div.setCustomValidity("");
+    
+            } catch (error) {
+                console.log(error);
+                alert('Houve um erro ao checar usuário inserido', 'error');
+            }
+        }
+        setLoading(false);
+    }
+
+    const handlePasswordConfirm = async () => {
+        if(
+            (formData.password && formData.password !== '') && 
+            (formData.passwordConfirm && formData.passwordConfirm !== '')
+        ) {
+            try {
+                const div = document.getElementById("passwordConfirm");
+                if (formData.password !== formData.passwordConfirm ) {
+                  div.setCustomValidity("As senhas não conferem.");
+                  div.reportValidity();
+                } 
+                else div.setCustomValidity("");
+    
+            } catch (error) {
+                console.log(error);
+                alert('Houve um erro ao checar senhas inseridas', 'error');
+            }
+        }
+    }
+
     return (
         <div id="new-user-content">
-            <AlertInform open={showAlert} close={setShowAlert} text={alertText} severity={alertType} />
+            <Alert 
+                open={showAlert} 
+                close={setShowAlert} 
+                text={alertText} 
+                severity={alertType} 
+            />
+
+            <AlertInform 
+                open={showAlertInform} 
+                close={handleBackToLogin} 
+                title={alertInformTitle} 
+                text={alertInformText}
+            />
 
             <div>
                 <label htmlFor="file">
@@ -174,33 +313,37 @@ export default function Product() {
                     onChange={(_, opt) => { if (opt) handleInputChange('category', opt) }}
                 />
                 <InputMask
+                    id="doc"
                     label="CNPJ"
                     mask="99.999.999/9999-99"
                     onChange={e => handleInputChange('doc', e.target.value)}
-                // required
+                    onBlur={handleDocAvaiability}
+                    required
                 />
                 <InputMask
                     label="Data de nascimento"
                     mask="99/99/9999"
                     onChange={e => handleInputChange('birth', e.target.value)}
-                // required
+                    required
                 />
                 <Input
                     label="Nome"
                     onChange={e => handleInputChange('name', e.target.value)}
-                // required
+                    required
                 />
                 <Input
+                    id="email"
                     label="E-mail"
                     type="email"
                     onChange={e => handleInputChange('email', e.target.value)}
-                // required
+                    onBlur={handleMailAvaiability}
+                    required
                 />
                 <InputMask
                     label="Telefone 1"
                     mask="(099) 9 9999-9999"
                     onChange={e => handleInputChange('phone1', e.target.value)}
-                // required
+                    required
                 />
                 <InputMask
                     label="Telefone 2"
@@ -208,40 +351,44 @@ export default function Product() {
                     onChange={e => handleInputChange('phone2', e.target.value)}
                 />
                 <Input
+                    id="user"
                     label="Usuário"
                     onChange={e => handleInputChange('user', e.target.value)}
-                // required
+                    onBlur={handleUserAvaiability}
+                    required
                 />
                 <Input
                     label="Senha"
                     type="password"
                     onChange={e => handleInputChange('password', e.target.value)}
-                // required
+                    required
                 />
                 <Input
+                    id="passwordConfirm"
                     label="Confirmar senha"
                     type="password"
-                    onChange={e => handleInputChange('confirmPassword', e.target.value)}
-                // required
+                    onChange={e => handleInputChange('passwordConfirm', e.target.value)}
+                    onBlur={handlePasswordConfirm}
+                    required
                 />
                 <InputMask
                     label="CEP"
                     mask="99999-999"
                     onChange={e => handleInputChange('cep', e.target.value)}
                     onBlur={handleCep}
-                // required
+                    required
                 />
                 <Input
                     label="Rua"
                     value={formData.street || ''}
                     onChange={e => handleInputChange('street', e.target.value)}
-                // required
+                    required
                 />
                 <Input
                     label="Número"
                     type="number"
                     onChange={e => handleInputChange('number', e.target.value)}
-                // required
+                    required
                 />
                 <Input
                     label="Complemento"
@@ -252,13 +399,13 @@ export default function Product() {
                     label="Bairro"
                     value={formData.district || ''}
                     onChange={e => handleInputChange('district', e.target.value)}
-                // required
+                    required
                 />
                 <Input
                     label="Cidade"
                     value={formData.city || ''}
                     onChange={e => handleInputChange('city', e.target.value)}
-                // required
+                    required
                 />
                 <Select
                     label="Estado"
@@ -270,7 +417,7 @@ export default function Product() {
                 <ButtonPrimary label="Cadastrar" loading={loading} />
             </form>
 
-            <b>Já tenho cadastro</b>
+            <b onClick={handleBackToLogin}>Já tenho cadastro</b>
         </div>
     )
 }

@@ -113,13 +113,6 @@ const resolvers = {
             return 'Olá ' + args.name;
         },
 
-        singleUpload: async (parent, args) => {
-            const resp = await Upload.uploadImage(args.file, 'Teste', 'testeUp');
-
-            console.log(resp);
-            return 'resp'
-        },
-
         //===========> USERS <============//
         userStore: async (_, args) => {
             return await UserController.store(args);

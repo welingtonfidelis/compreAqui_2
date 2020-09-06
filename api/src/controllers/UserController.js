@@ -145,8 +145,8 @@ module.exports = {
 
             let photoUrl = null;
             if(args.photo && args.photo !== '') {
-                const folder = args.type === 'client' ? 'client' : 'commercial';
-                const resp = await Upload.uploadImage(args.photo, folder, args.name);
+                const folder = args.type;
+                const resp = await Upload.uploadImage(args.photo, folder, args.user);
                 
                 if(resp) photoUrl = resp.Location;
             }

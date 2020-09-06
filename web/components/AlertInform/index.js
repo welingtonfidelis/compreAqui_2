@@ -1,26 +1,38 @@
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+import {
+    Button, Dialog, DialogActions, DialogContent,
+    DialogTitle, Slide, DialogContentText
+} from '@material-ui/core';
 
-export default function AlertInform(props) {
-    const {
-        open, close, text = 'Salvo com sucesso', severity = 'success',
-        vertical = 'top', horizontal = 'right'
-    } = props;
+import ButtonSecondary from '../ButtonSecondary';
 
-    const Alert = (props) => ( <MuiAlert elevation={6} variant="filled" {...props} /> )
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
-    const handleClose = () => { close(false) };
+export default function AlertInform({ title, text, open, close }) {
 
     return (
-        <Snackbar
+        <Dialog
             open={open}
-            autoHideDuration={6000}
-            onClose={handleClose}
-            anchorOrigin={{ vertical, horizontal }}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={close}
+            aria-labelledby="alert-dialog-slide-title"
+            aria-describedby="alert-dialog-slide-description"
         >
-            <Alert onClose={handleClose} severity={severity}>
-                {text}
-            </Alert>
-        </Snackbar>
+            <DialogTitle id="alert-dialog-slide-title">{title}</DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                    {text}
+          </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={close} color="primary">
+                    <b style={{color: '#F2BB16'}}>
+                        OK
+                    </b>
+                </Button>
+            </DialogActions>
+        </Dialog>
     )
 }

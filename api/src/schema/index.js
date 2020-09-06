@@ -186,8 +186,6 @@ const typeDefs = gql`
     type Mutation {
         test(name: String!): String!
 
-        singleUpload(file: String!): String!
-
         ##===========> USER <============##
         userStore(
             name: String!,
