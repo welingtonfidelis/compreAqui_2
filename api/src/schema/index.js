@@ -10,8 +10,7 @@ const typeDefs = gql`
     type Token {
         name: String,
         token: String,
-        typeUser: String,
-        typeUserEncript: String,
+        userType: String,
         photoUrl: String
     }
 

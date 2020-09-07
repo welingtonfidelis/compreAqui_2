@@ -1,4 +1,3 @@
-const Upload = require('../services/Upload');
 const SessionController = require('../controllers/SessionController');
 const StateController = require('../controllers/StateController');
 const UserController = require('../controllers/UserController');

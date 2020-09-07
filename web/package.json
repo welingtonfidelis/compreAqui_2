@@ -19,6 +19,7 @@
     "next-images": "^1.4.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-feather": "^2.0.8",
     "react-input-mask": "^2.0.4",
     "sass": "^1.26.10"
   }

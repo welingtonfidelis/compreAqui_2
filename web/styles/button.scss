@@ -35,7 +35,8 @@
     color: #F2BB16 !important;
 }
 
-.button-primary-block .MuiCircularProgress-root {
+.button-primary-block .MuiCircularProgress-root, 
+.button-secondary-block .MuiCircularProgress-root {
     width: 20px !important;
     height: 20px !important;
     color: #F2BB16 !important;

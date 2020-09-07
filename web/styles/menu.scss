@@ -51,12 +51,12 @@
 }
 
 #menu-user-img img {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     color: #fff;
     background: #F2BB16;
     border-radius: 50%;
-    padding: 5px;
+    padding: 2px;
 }
 
 .menu-group-1 {
@@ -70,6 +70,11 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    align-items: center;
+}
+
+.menu-group-2:hover {
+    cursor: pointer;
 }
 
 .menu-selected-opt svg {

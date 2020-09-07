@@ -15,7 +15,6 @@ import AlertInform from '../../components/AlertInform';
 import UserLogo from '../../assets/images/user.svg';
 
 export default function Product() {
-    const [file, setFile] = useState(null);
     const [states, setStates] = useState([]);
     const [categories, setCategories] = useState([]);
     const [showAlert, setShowAlert] = useState(false);
