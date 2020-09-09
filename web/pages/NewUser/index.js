@@ -64,7 +64,7 @@ export default function Product() {
         }
 
         setLoading(false);
-    }, [])
+    }, []);
 
     const handleSaveUser = async (event) => {
         event.preventDefault()

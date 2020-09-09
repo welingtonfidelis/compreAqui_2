@@ -110,12 +110,12 @@ export default function Home() {
         text={alertInformText}
       />
 
-      <form onSubmit={handleSubmit} className="login-conteiner">
+      <form onSubmit={handleSubmit} className="login-container">
         <img src={Logo} alt="Logo" />
 
         <span>Insira seu usuário/e-mail e senha abaixo</span>
 
-        <div className="login-input-conteiner">
+        <div className="login-input-container">
           <Input
             label="Usuário/E-mail"
             onChange={e => setUser(e.target.value)}

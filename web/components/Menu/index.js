@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Person, Dashboard, ExitToApp, Assignment } from '@material-ui/icons';
+import { CheckBoxOutlineBlank, Dashboard, ExitToApp, Assignment } from '@material-ui/icons';
 import Link from 'next/link';
 import Router from 'next/router';
-import { Box } from 'react-feather';
 
 import AlertInform from '../AlertInform';
 import AlertConfirm from '../AlertConfirm';
@@ -67,14 +66,14 @@ export default function Menu(props) {
             icon: <Dashboard />
         },
         {
-            name: 'Produtos',
-            component: 'Product',
-            icon: <Box size="22" />
-        },
-        {
             name: 'Pedidos',
             component: 'Order',
             icon: <Assignment />
+        },
+        {
+            name: 'Produtos',
+            component: 'Product',
+            icon: <CheckBoxOutlineBlank />
         },
     ]
 

@@ -28,3 +28,14 @@ input, button, textarea, .MuiInputBase-input {
 #main {
   flex-grow: 1;
 }
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.pagination .Mui-selected {
+  background-color: #F2BB16 !important;
+  color: #000 !important;
+}

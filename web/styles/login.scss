@@ -6,7 +6,7 @@
     align-items: center;
 }
 
-.login-conteiner {
+.login-container {
     border: 1px solid #F2BB16;
     border-radius: 4px;
     padding: 40px;
@@ -17,11 +17,11 @@
     width: 60vw;
 }
 
-.login-conteiner img {
-    width: 100%;
+.login-container img {
+    width: 90%;
 }
 
-.login-conteiner span {
+.login-container span {
     font-size: 1.2rem;
     color: #646464;
     width: 30vw;
@@ -30,29 +30,29 @@
     margin-bottom: 10px;
 }
 
-.login-conteiner .error-message {
+.login-container .error-message {
     margin-top: 0;
     color: red;
     font-size: 1.1rem;
 }
 
-.login-input-conteiner {
+.login-input-container {
     width: 100%;
 }
 
-.login-input-conteiner .input-block {
+.login-input-container .input-block {
     margin: 10px 0;
 }
 
-.login-conteiner .button-secondary-block {
+.login-container .button-secondary-block {
     margin-top: 20px;
 }
 
-.login-conteiner .button-primary-block {
+.login-container .button-primary-block {
     margin-top: 40px;
 }
 
-.login-conteiner b {
+.login-container b {
     color: #646464;
     text-align: right;
     width: 100%;
@@ -60,7 +60,7 @@
     transition: .5s;
 }
 
-.login-conteiner b:hover {
+.login-container b:hover {
     cursor: pointer;
     filter: brightness(.8);
 }
