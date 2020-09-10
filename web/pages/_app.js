@@ -1,4 +1,6 @@
 import '../styles/globals.scss';
+import '../styles/animations.scss';
+import '../styles/modal.scss';
 import '../styles/menu.scss';
 import '../styles/login.scss';
 import '../styles/input.scss';

@@ -56,6 +56,7 @@
     background-color: #F2BB16;
     margin: 10px;
     border-radius: 12px;
+    box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.2);
 }
 
 .order-card-header {
@@ -70,17 +71,33 @@
     background-color: #E5E5E5;
     border-radius: 12px;
     padding: 10px 5px;
-    height: 200px;
+    height: 100px;
     display: flex;
     flex-direction: column;
 }
 
-.order-subcard-header {
+.order-card-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
 
+@media (max-width: 600px) {
+    .order-card-container {
+        grid-template-columns: repeat(1, 1fr) !important;
+    }
+}
+
+.order-subcard-header {
+    border-bottom: 1px solid #fff;
+    padding-bottom: 10px;
+    font-weight: bold;
+    font-size: 1.2rem;
 }
 .order-subcard-content {
     flex-grow: 1;   
 }
 .order-subcard-footer {
-
+    text-align: right;
+    font-weight: bold;
+    font-size: 1.2rem;
 }

@@ -36,7 +36,6 @@ export default {
   },
 
   async fileToBase64(file) {
-    console.log('-->', file);
     const result_base64 = await new Promise((resolve) => {
       const fileReader = new FileReader();
       fileReader.onload = (e) => resolve(fileReader.result);
@@ -44,5 +43,13 @@ export default {
     });
 
     return result_base64;
+  },
+
+  getWindowDimensions() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return {
+      width,
+      height
+    }
   }
 }

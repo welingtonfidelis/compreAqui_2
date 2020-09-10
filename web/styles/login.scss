@@ -14,7 +14,14 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 60vw;
+    width: 40vw;
+}
+
+@media (max-width: 600px) {
+    .login-container {
+        width: 80vw !important;
+        padding: 20px !important;
+    }
 }
 
 .login-container img {

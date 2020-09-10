@@ -1,0 +1,29 @@
+.modal-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    height: 85vh;
+    width: 85vw;
+}
+
+.modal-close-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.modal-close-button button {
+    padding: 0;
+}
+
+.modal-close-button svg {
+    color: #F2BB16;
+}

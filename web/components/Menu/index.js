@@ -1,15 +1,20 @@
 import { useEffect, useState } from 'react';
-import { CheckBoxOutlineBlank, Dashboard, ExitToApp, Assignment } from '@material-ui/icons';
 import Link from 'next/link';
 import Router from 'next/router';
+import { IconButton } from '@material-ui/core';
+import {
+    CheckBoxOutlineBlank, Dashboard, ExitToApp, Assignment, Menu
+} from '@material-ui/icons';
 
 import AlertInform from '../AlertInform';
 import AlertConfirm from '../AlertConfirm';
 
+import utils from '../../services/utils';
+
 import Logo from '../../assets/images/logo.png';
 import UserLogo from '../../assets/images/user.svg';
 
-export default function Menu(props) {
+export default function MenuComponent(props) {
     const [name, setName] = useState('');
     const [photoUrl, setPhotoUrl] = useState('');
     const [showAlertInform, setShowAlertInform] = useState(false);
@@ -18,6 +23,16 @@ export default function Menu(props) {
     const [showAlertConfirm, setShowAlertConfirm] = useState(false);
     const [alertConfirmText, setAlertConfirmText] = useState('');
     const [alertConfirmTitle, setAlertConfirmTitle] = useState('');
+    const [screenWidth, setScreenWidth] = useState(1980);
+    const [showMenu, setShowMenu] = useState(true);
+    const [menuClass, setMenuClass] = useState('');
+
+    useEffect(() => {
+        if (screenWidth <= 600) {
+            const cl = showMenu ? 'menu-content-show' : 'menu-content-hidden';
+            setMenuClass(cl);
+        }
+    }, [showMenu]);
 
     useEffect(() => {
         if (!sessionStorage.getItem('compreAqui@token')) {
@@ -27,6 +42,10 @@ export default function Menu(props) {
             );
         }
         else {
+            const width = utils.getWindowDimensions().width;
+            if (width <= 600) setShowMenu(false);
+            setScreenWidth(width);
+
             setName(sessionStorage.getItem('compreAqui@name'));
             setPhotoUrl(sessionStorage.getItem('compreAqui@photoUrl'));
         }
@@ -78,49 +97,58 @@ export default function Menu(props) {
     ]
 
     return (
-        <div id="menu-content">
-            <AlertInform
-                open={showAlertInform}
-                close={handleBackToLogin}
-                title={alertInformTitle}
-                text={alertInformText}
-            />
+        <>
+            {
+                screenWidth <= 600 &&
+                <IconButton onClick={() => setShowMenu(!showMenu)} className="menu-mobile-button">
+                    <Menu />
+                </IconButton>
+            }
 
-            <AlertConfirm
-                open={showAlertConfirm}
-                close={setShowAlertConfirm}
-                confirm={handleExitApp}
-                title={alertConfirmTitle}
-                text={alertConfirmText}
-            />
+            <div id="menu-content" className={menuClass}>
+                <AlertInform
+                    open={showAlertInform}
+                    close={handleBackToLogin}
+                    title={alertInformTitle}
+                    text={alertInformText}
+                />
 
-            <header id="menu-logo-img">
-                <img src={Logo} alt="logo" />
-            </header>
+                <AlertConfirm
+                    open={showAlertConfirm}
+                    close={setShowAlertConfirm}
+                    confirm={handleExitApp}
+                    title={alertConfirmTitle}
+                    text={alertConfirmText}
+                />
 
-            <main id="menu-list-opt">
-                {options.map(el => {
-                    return (
-                        <Link href={el.component} key={el.name}>
-                            <div className={props.page === el.component ? 'menu-selected-opt' : ''}>
-                                {el.icon}
-                                {el.name}
-                            </div>
-                        </Link>
-                    )
-                })}
-            </main>
+                <header id="menu-logo-img">
+                    <img src={Logo} alt="logo" />
+                </header>
 
-            <footer id="menu-user-img">
-                <div className="menu-group-1">
-                    <img src={photoUrl ? photoUrl : UserLogo} alt="UserLogo" />
-                    <b>{name}</b>
-                </div>
-                <div className="menu-group-2" onClick={() => alertConfirm()}>
-                    <b>Sair</b>
-                    <ExitToApp color="secondary" />
-                </div>
-            </footer>
-        </div>
+                <main id="menu-list-opt">
+                    {options.map(el => {
+                        return (
+                            <Link href={el.component} key={el.name}>
+                                <div className={props.page === el.component ? 'menu-selected-opt' : ''}>
+                                    {el.icon}
+                                    {el.name}
+                                </div>
+                            </Link>
+                        )
+                    })}
+                </main>
+
+                <footer id="menu-user-img">
+                    <div className="menu-group-1">
+                        <img src={photoUrl ? photoUrl : UserLogo} alt="UserLogo" />
+                        <b>{name}</b>
+                    </div>
+                    <div className="menu-group-2" onClick={() => alertConfirm()}>
+                        <b>Sair</b>
+                        <ExitToApp color="secondary" />
+                    </div>
+                </footer>
+            </div>
+        </>
     )
 }

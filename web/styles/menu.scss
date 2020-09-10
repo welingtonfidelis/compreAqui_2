@@ -41,7 +41,7 @@
 
 #menu-list-opt div:hover {
     cursor: pointer;
-    color: #F2BB16;
+    color: #f2bb16;
 }
 
 #menu-user-img {
@@ -54,7 +54,7 @@
     width: 70px;
     height: 70px;
     color: #fff;
-    background: #F2BB16;
+    background: #f2bb16;
     border-radius: 50%;
     padding: 2px;
 }
@@ -78,5 +78,28 @@
 }
 
 .menu-selected-opt svg {
-    color: #F2BB16 !important;
+    color: #f2bb16 !important;
+}
+
+.menu-content-show {
+    display: flex !important;
+    position: absolute !important;
+    height: 97% !important;
+    z-index: 998 !important;
+
+    -webkit-animation: slide-in-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    animation: slide-in-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.menu-content-hidden {
+    -webkit-animation: slide-in-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    animation: slide-in-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+
+    display: none !important;
+}
+
+.menu-mobile-button {
+    height: 35px !important;
+    width: 20px !important;
+    z-index: 999 !important;
 }
