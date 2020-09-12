@@ -32,5 +32,5 @@ module.exports = Joi.object({
         .max(255),
 
     products: Joi.array()
-        .ordered(OrderListProduct)
+        .items(OrderListProduct)
 });

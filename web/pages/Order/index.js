@@ -4,6 +4,10 @@ import { Pagination } from '@material-ui/lab';
 import {
     SentimentVerySatisfied, SentimentSatisfied, SentimentVeryDissatisfied
 } from '@material-ui/icons'
+import {
+    Table, TableBody, TableCell, TableHead,
+    TableContainer, TableRow, Paper
+} from '@material-ui/core';
 
 import Alert from '../../components/Alert';
 import Menu from '../../components/Menu';
@@ -26,6 +30,7 @@ export default function Order() {
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
     const [orderList, setOrderList] = useState([]);
+    const [orderEdit, setOrderEdit] = useState({});
 
     useEffect(() => {
         setLoading(true);
@@ -39,12 +44,6 @@ export default function Order() {
                                 createdAt
                                 status
                                 value
-                                orderProducts {
-                                    amount
-                                    product {
-                                    name
-                                    }
-                                }
                                 client {
                                     name
                                 }
@@ -111,9 +110,61 @@ export default function Order() {
         });
     }
 
-    const handleOrderShow = (id) => {
-        console.log('->', id);
-        setShowModal(true);
+    const handleOrderShow = async (id) => {
+        setLoading(true);
+        try {
+            const query = await api.query({
+                query: gql`
+                    query orderShow($id: ID!) {
+                        orderShow(id: $id){
+                            id
+                            timeWait
+                            value
+                            status
+                            reason
+                            orderProducts {
+                                id
+                                amount
+                                product {
+                                    name
+                                    price
+                                }
+                            }
+                            client {
+                                name
+                                email
+                                phone1
+                                phone2
+                                address {
+                                    cep
+                                    state
+                                    city
+                                    district
+                                    complement
+                                    street
+                                    number
+                                }
+                            }
+                        }
+                    }
+                `,
+                variables: {
+                    id
+                },
+            });
+
+            console.log(query.data);
+            const { orderShow } = query.data;
+            if (orderShow) {
+                setOrderEdit(orderShow);
+                setShowModal(true);
+            }
+
+        } catch (error) {
+            console.log('ERROR', error);
+            alert('Houve um erro ao carregar as informações', 'error');
+        }
+        setLoading(false);
     }
 
     return (
@@ -189,7 +240,33 @@ export default function Order() {
                     open={showModal}
                     close={setShowModal}
                 >
-                    <h1>Testinho</h1>
+                    {orderEdit.id &&
+                        <div className="order-modal-edit">
+                            <Load id="divLoading" loading={loading} />
+                            <h1>Pedido {orderEdit.id}</h1>
+
+                            <TableContainer>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>Qtd</TableCell>
+                                            <TableCell>Produto</TableCell>
+                                            <TableCell>Preço</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {(orderEdit.orderProducts).map(el => (
+                                            <TableRow>
+                                                <TableCell>{el.amount}</TableCell>
+                                                <TableCell>{el.product.name}</TableCell>
+                                                <TableCell>{utils.maskValue(el.product.price)}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </div>
+                    }
                 </Modal>
             </div>
         </div>

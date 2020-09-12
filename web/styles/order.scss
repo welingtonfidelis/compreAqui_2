@@ -101,3 +101,16 @@
     font-weight: bold;
     font-size: 1.2rem;
 }
+
+.order-modal-edit {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.order-modal-edit .MuiTableContainer-root{
+    height: 50%;
+    border: 1px solid #F2BB16;
+    border-radius: 4px;
+}
