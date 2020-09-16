@@ -14,6 +14,7 @@ import Menu from '../../components/Menu';
 import Input from '../../components/Input';
 import InputMask from '../../components/InputMask';
 import ButtonPrimary from '../../components/ButtonPrimary';
+import ButtonSecondary from '../../components/ButtonSecondary';
 import Load from '../../components/Load';
 import Modal from '../../components/Modal';
 
@@ -122,6 +123,10 @@ export default function Order() {
                             value
                             status
                             reason
+                            createdAt
+                            observation
+                            delivery
+                            cashBack
                             orderProducts {
                                 id
                                 amount
@@ -243,7 +248,8 @@ export default function Order() {
                     {orderEdit.id &&
                         <div className="order-modal-edit">
                             <Load id="divLoading" loading={loading} />
-                            <h1>Pedido {orderEdit.id}</h1>
+
+                            {/* <h1>Pedido {orderEdit.id}</h1>
 
                             <TableContainer>
                                 <Table>
@@ -264,7 +270,49 @@ export default function Order() {
                                         ))}
                                     </TableBody>
                                 </Table>
-                            </TableContainer>
+                            </TableContainer> */}
+
+                            <div className="order-modal-card-container">
+                                <div className="card-left">
+                                    <h3>Pedido #{orderEdit.id}</h3>
+
+                                    <Input
+                                        label="Data" disabled
+                                        defaultValue={utils.maskDate(orderEdit.createdAt)}
+                                    />
+                                    <Input
+                                        label="Cliente" disabled
+                                        defaultValue={orderEdit.client.name}
+                                    />
+                                    <Input
+                                        label="Observações"
+                                        multiline rows={4} rowsMax={4}
+                                        disabled
+                                        defaultValue={orderEdit.observation}
+                                    />
+                                    <Input
+                                        label="E-mail" disabled
+                                        defaultValue={orderEdit.client.email}
+                                    />
+                                    <Input
+                                        label="Entregar" disabled
+                                        defaultValue={orderEdit.delivery ? 'SIM' : 'NÃO'}
+                                    />
+                                    <Input
+                                        label="Troco para" disabled
+                                        defaultValue={utils.maskValue(orderEdit.cashBack)}
+                                    />
+                                </div>
+
+                                <div className="card-right">
+
+                                </div>
+                            </div>
+
+                            <div className="order-modal-buttons">
+                                <ButtonSecondary label="Cancelar" />
+                                <ButtonPrimary label="Salvar" loading={loading} />
+                            </div>
                         </div>
                     }
                 </Modal>

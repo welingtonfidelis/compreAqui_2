@@ -114,3 +114,42 @@
     border: 1px solid #F2BB16;
     border-radius: 4px;
 }
+
+.order-modal-card-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 10px;
+    color: #5B5B5B;
+}
+
+.order-modal-card-container .card-left {
+    background: #F2F4F6;
+    flex-grow: 1;
+    border-radius: 8px;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    align-items: center;
+}
+
+.order-modal-card-container .card-right {
+    background: #F2F4F6;
+    flex-grow: 2;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.order-modal-buttons {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+}
+
+.order-modal-buttons button {
+    margin: 0 10px;
+}
