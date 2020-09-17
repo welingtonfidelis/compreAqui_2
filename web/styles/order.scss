@@ -103,14 +103,14 @@
 }
 
 .order-modal-edit {
-    height: 100%;
+    height: calc(100% - 14vh);
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .order-modal-edit .MuiTableContainer-root{
-    height: 50%;
+    height: 70%;
     border: 1px solid #F2BB16;
     border-radius: 4px;
 }
@@ -126,22 +126,28 @@
 
 .order-modal-card-container .card-left {
     background: #F2F4F6;
-    flex-grow: 1;
     border-radius: 8px;
     margin-right: 10px;
     display: flex;
     flex-direction: column;
     padding: 10px;
     align-items: center;
+    overflow: auto;
+}
+
+.order-modal-card-container .card-left .input-block {
+    margin: 5px 0;
+    width: 100%;
 }
 
 .order-modal-card-container .card-right {
     background: #F2F4F6;
-    flex-grow: 2;
+    width: 70%;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     padding: 10px;
+    overflow: auto;
 }
 
 .order-modal-buttons {

@@ -32,6 +32,7 @@ export default function Order() {
     const [totalPage, setTotalPage] = useState(1);
     const [orderList, setOrderList] = useState([]);
     const [orderEdit, setOrderEdit] = useState({});
+    const [orderEditClientAddress, setOrderEditClientAddress] = useState('');
 
     useEffect(() => {
         setLoading(true);
@@ -161,6 +162,15 @@ export default function Order() {
             console.log(query.data);
             const { orderShow } = query.data;
             if (orderShow) {
+                const {
+                    cep, city, complement, district, number, state, street
+                } = orderShow.client.address[0];
+
+                setOrderEditClientAddress(
+                    `Rua ${street}, Nº ${number}, ${complement}, ` +
+                    `Bairro ${district}, CEP ${cep}. ${city} - ${state}`
+                );
+
                 setOrderEdit(orderShow);
                 setShowModal(true);
             }
@@ -249,29 +259,6 @@ export default function Order() {
                         <div className="order-modal-edit">
                             <Load id="divLoading" loading={loading} />
 
-                            {/* <h1>Pedido {orderEdit.id}</h1>
-
-                            <TableContainer>
-                                <Table>
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell>Qtd</TableCell>
-                                            <TableCell>Produto</TableCell>
-                                            <TableCell>Preço</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {(orderEdit.orderProducts).map(el => (
-                                            <TableRow>
-                                                <TableCell>{el.amount}</TableCell>
-                                                <TableCell>{el.product.name}</TableCell>
-                                                <TableCell>{utils.maskValue(el.product.price)}</TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer> */}
-
                             <div className="order-modal-card-container">
                                 <div className="card-left">
                                     <h3>Pedido #{orderEdit.id}</h3>
@@ -285,14 +272,16 @@ export default function Order() {
                                         defaultValue={orderEdit.client.name}
                                     />
                                     <Input
-                                        label="Observações"
-                                        multiline rows={4} rowsMax={4}
-                                        disabled
-                                        defaultValue={orderEdit.observation}
-                                    />
-                                    <Input
                                         label="E-mail" disabled
                                         defaultValue={orderEdit.client.email}
+                                    />
+                                    <Input
+                                        label="Telefone 1" disabled
+                                        defaultValue={orderEdit.client.phone1}
+                                    />
+                                    <Input
+                                        label="Telefone 2" disabled
+                                        defaultValue={orderEdit.client.phone2}
                                     />
                                     <Input
                                         label="Entregar" disabled
@@ -302,10 +291,41 @@ export default function Order() {
                                         label="Troco para" disabled
                                         defaultValue={utils.maskValue(orderEdit.cashBack)}
                                     />
+                                    <Input
+                                        label="Endereço"
+                                        multiline rows={4} rowsMax={4}
+                                        disabled
+                                        defaultValue={orderEditClientAddress}
+                                    />
+                                    <Input
+                                        label="Observações"
+                                        multiline rows={4} rowsMax={4}
+                                        disabled
+                                        defaultValue={orderEdit.observation}
+                                    />
                                 </div>
 
                                 <div className="card-right">
-
+                                    <TableContainer>
+                                        <Table>
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell>Qtd</TableCell>
+                                                    <TableCell>Produto</TableCell>
+                                                    <TableCell>Preço</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {(orderEdit.orderProducts).map(el => (
+                                                    <TableRow>
+                                                        <TableCell>{el.amount}</TableCell>
+                                                        <TableCell>{el.product.name}</TableCell>
+                                                        <TableCell>{utils.maskValue(el.product.price)}</TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
                                 </div>
                             </div>
 
