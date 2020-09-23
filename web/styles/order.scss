@@ -110,7 +110,7 @@
 }
 
 .order-modal-edit .MuiTableContainer-root{
-    height: 70%;
+    height: 80%;
     border: 1px solid #F2BB16;
     border-radius: 4px;
 }
@@ -150,6 +150,12 @@
     overflow: auto;
 }
 
+.order-modal-card-container .card-right b {
+    align-self: flex-end;
+    margin-top: 5px;
+    font-size: 1.2rem;
+}
+
 .order-modal-buttons {
     display: flex;
     flex-direction: row;
@@ -158,4 +164,12 @@
 
 .order-modal-buttons button {
     margin: 0 10px;
+}
+
+.card-right .select-block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
 }

@@ -12,6 +12,7 @@ import {
 import Alert from '../../components/Alert';
 import Menu from '../../components/Menu';
 import Input from '../../components/Input';
+import Select from '../../components/Select';
 import InputMask from '../../components/InputMask';
 import ButtonPrimary from '../../components/ButtonPrimary';
 import ButtonSecondary from '../../components/ButtonSecondary';
@@ -33,13 +34,23 @@ export default function Order() {
     const [orderList, setOrderList] = useState([]);
     const [orderEdit, setOrderEdit] = useState({});
     const [orderEditClientAddress, setOrderEditClientAddress] = useState('');
+    const [formData, setFormaData] = useState({});
+    const orderOptStatus = [
+        { code: "rejected", name: "Rejeitado" },
+        { code: "awaiting", name: "Aguardando" },
+        { code: "approved", name: "Aprovado" }
+    ]
 
     useEffect(() => {
+        getInfo();
+
+    }, [orderStatus, page]);
+
+    const getInfo = async () => {
         setLoading(true);
         try {
-            async function getInfo() {
-                const query = await api.query({
-                    query: gql`
+            const query = await api.query({
+                query: gql`
                         query orderIndexAndorderCount($page: Int, $status: String) {
                             orderIndex(page: $page, status: $status){
                                 id
@@ -54,29 +65,25 @@ export default function Order() {
                             orderCount(status: $status)
                         }
                     `,
-                    variables: {
-                        page, status: orderStatus
-                    },
-                });
+                variables: {
+                    page, status: orderStatus
+                },
+            });
 
-                console.log(query.data);
-                const { orderIndex, orderCount } = query.data;
-                if (orderCount) {
-                    let tmp = ((orderCount / 15) + '').split('.');
-                    tmp = tmp[1] ? parseInt(tmp[0]) + 1 : tmp[0];
-                    setTotalPage(tmp);
-                }
-                if (orderIndex) setOrderList(orderIndex);
+            const { orderIndex, orderCount } = query.data;
+            if (orderCount) {
+                let tmp = ((orderCount / 15) + '').split('.');
+                tmp = tmp[1] ? parseInt(tmp[0]) + 1 : tmp[0];
+                setTotalPage(tmp);
             }
+            if (orderIndex) setOrderList(orderIndex);
 
-            getInfo();
         } catch (error) {
             console.log('ERROR', error);
             alert('Houve um erro ao carregar as informações', 'error');
         }
         setLoading(false);
-
-    }, [orderStatus, page]);
+    }
 
     const alert = (text = 'Salvo com sucesso', type = 'success') => {
         setAlertText(text);
@@ -110,6 +117,10 @@ export default function Order() {
                 </div>
             );
         });
+    }
+
+    const handleInputChange = (name, value) => {
+        setFormaData({ ...formData, [name]: value });
     }
 
     const handleOrderShow = async (id) => {
@@ -159,7 +170,6 @@ export default function Order() {
                 },
             });
 
-            console.log(query.data);
             const { orderShow } = query.data;
             if (orderShow) {
                 const {
@@ -172,6 +182,8 @@ export default function Order() {
                 );
 
                 setOrderEdit(orderShow);
+                const [status] = orderOptStatus.filter(el => el.code === orderShow.status);
+                handleInputChange('status', status);
                 setShowModal(true);
             }
 
@@ -180,6 +192,52 @@ export default function Order() {
             alert('Houve um erro ao carregar as informações', 'error');
         }
         setLoading(false);
+    }
+
+    const handleSaveEdit = async () => {
+        console.log('Alterar', formData.status, orderEdit.id);
+        setLoading(true);
+        try {
+            const query = await api.mutate({
+                mutation: gql`
+                    mutation orderChangeStatus(
+                        $id: ID!
+                        $status: String!
+                        $timeWait: Int
+                        $reason: String
+                    ) 
+                    {
+                        orderChangeStatus(
+                            id: $id
+                            status: $status
+                            timeWait: $timeWait
+                            reason: $reason
+                        )
+                    }`,
+                variables: {
+                    id: orderEdit.id, status: formData.status.code, timeWait: 1, reason: 'OKOK'
+                }
+
+            });
+
+            const { data } = query;
+
+            if (data.orderChangeStatus) {
+                getInfo();
+                handleCancelEdit();
+            }
+
+        } catch (error) {
+            console.log('ERROR', error);
+            alert('Houve um erro ao alterar pedido', 'error');
+        }
+        setLoading(false);
+    }
+
+    const handleCancelEdit = () => {
+        setShowModal(false);
+        setFormaData({});
+        setOrderEdit({});
     }
 
     return (
@@ -317,21 +375,36 @@ export default function Order() {
                                             </TableHead>
                                             <TableBody>
                                                 {(orderEdit.orderProducts).map(el => (
-                                                    <TableRow>
+                                                    <TableRow key={el.id}>
                                                         <TableCell>{el.amount}</TableCell>
                                                         <TableCell>{el.product.name}</TableCell>
-                                                        <TableCell>{utils.maskValue(el.product.price)}</TableCell>
+                                                        <TableCell>
+                                                            {utils.maskValue(el.product.price)}
+                                                        </TableCell>
                                                     </TableRow>
                                                 ))}
                                             </TableBody>
                                         </Table>
                                     </TableContainer>
+
+                                    <b>Total: {utils.maskValue(orderEdit.value)}</b>
+
+                                    <Select
+                                        label="Situação do pedido"
+                                        options={orderOptStatus}
+                                        value={formData.status || null}
+                                        getOptionSelected={(
+                                            option,
+                                            value,
+                                        ) => value.value === option.value}
+                                        onChange={(_, opt) => { if (opt) handleInputChange('status', opt) }}
+                                    />
                                 </div>
                             </div>
 
                             <div className="order-modal-buttons">
-                                <ButtonSecondary label="Cancelar" />
-                                <ButtonPrimary label="Salvar" loading={loading} />
+                                <ButtonSecondary label="Cancelar" onClick={handleCancelEdit} />
+                                <ButtonPrimary label="Salvar" loading={loading} onClick={handleSaveEdit} />
                             </div>
                         </div>
                     }
